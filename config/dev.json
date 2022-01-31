@@ -1,0 +1,23 @@
+{
+  "dbconfig": {
+    "dbname": "maindb",
+    "host": "localhost",
+    "hostWithPort": "localhost:27017",
+    "isReplicaSet": false,
+    "replicaHosts": "localhost:27018,localhost:27019",
+    "replicaName": "rs0",
+    "port": 27017,
+    "dbuser": "",
+    "connString": "mongodb://localhost:27017/main"
+  },
+  "analyticsDbConfig": {
+    "dbname": "analyticsdb",
+    "host": "localhost",
+    "isReplicaSet": false,
+    "replicaHosts": "localhost:27018,localhost:27019",
+    "replicaName": "rs0",
+    "port": 27017,
+    "dbuser": "",
+    "connString": "mongodb://localhost:27017/analytics"
+  }
+}

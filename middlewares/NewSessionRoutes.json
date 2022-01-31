@@ -1,0 +1,8 @@
+{
+  "GET": {},
+  "POST": {
+    "/v1/user/register": {
+      "eventType": "REGISTER"
+    }
+  }
+}

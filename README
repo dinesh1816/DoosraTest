@@ -1,0 +1,36 @@
+User collection sample doc
+{
+"\_id" : ObjectId("60acb4988c3ed165b8fc50eb"),
+"mobile_no" : "9966137403",
+"first_name" : "vik",
+"email" : "vik@gmail.com",
+"alternate_mobile_no" : "123",
+"last_name" : "gadam",
+"client_id" : "5d403e0cb80630c753c3df89",
+"user_type" : [
+"user"
+],
+"password" : "vikky"
+}
+
+Sample Url for testing
+
+curl --location --request POST 'localhost:4000/v1/user/register' \
+--header 'Content-Type: application/json' \
+--header 'api-key: 1234' \
+--data-raw '{
+"mobileNo":"1",
+"password":"2",
+"firstName":"3",
+"lastName":"4"
+}'
+
+Node version: 16
+used VS plugins: eslint
+
+TODO:
+
+1. Events handling
+2. Integration testing
+3. Husky
+4. Sentry

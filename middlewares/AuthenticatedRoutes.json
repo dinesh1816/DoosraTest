@@ -1,0 +1,15 @@
+{
+  "GET": {
+    "/v1/user/user-details": {
+      "eventType": "GET_USER_DETAILS",
+      "userType": ["user"]
+    }
+  },
+  "POST": {},
+  "PUT": {
+    "/v1/user/user-details": {
+      "eventType": "UPDATE_USER_DETAILS",
+      "userType": ["user"]
+    }
+  }
+}
