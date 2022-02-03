@@ -100,7 +100,7 @@ const getRouteObj = (originalUrl, httpMethod) => {
       }
     }
   }
-  // If route is not found from RoutesMap it shoud be treated
+  // If route is not found from RoutesMap it shoud be treated as others
   if (!isRouteObjFound) {
     routeObj.httpMethod = httpMethod;
     routeObj.baseURL = baseURL;

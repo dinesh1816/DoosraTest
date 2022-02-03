@@ -2,7 +2,35 @@
   "GET": {},
   "POST": {
     "/v1/user/register": {
-      "eventType": "REGISTER"
+      "eventType": "REGISTER",
+      "schema":{
+        "query":{
+
+        },
+        "body":{
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "title": "REGISTER",
+          "type": "object",
+          "properties": {
+            "mobileNo": {
+              "type": "string",
+              "required": true
+            },
+            "password": {
+              "type": "string",
+              "required": true
+            },
+            "firstName": {
+              "type": "string",
+              "required": true
+            },
+            "lastName": {
+              "type": "string",
+              "required": true
+            }
+          }
+        }
+      }
     }
   }
 }
