@@ -5,17 +5,7 @@
   "main": "bin/sample_app.js",
   "scripts": {
     "start": "nodemon index.js",
-    "lint": "eslint '**/*.js' --ignore-pattern node_modules/",
-    "pretty": "prettier --write '**/*.{js,jsx,json}'",
-    "husky": "husky install"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*": "prettier --write '**/*.{js,jsx,json,ts,tsx}'"
+    "lint": "eslint '**/*.js' --ignore-pattern node_modules/"
   },
   "keywords": [],
   "dependencies": {

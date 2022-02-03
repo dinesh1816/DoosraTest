@@ -7,7 +7,6 @@ import "express-async-errors";
 
 // Default Imports
 import user from "./routes/User";
-// import posts from './routes/Posts';
 import health from "./routes/Health";
 
 import reqLog from "./middlewares/RequestLogger";
