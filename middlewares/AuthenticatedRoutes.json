@@ -9,7 +9,30 @@
   "PUT": {
     "/v1/user/user-details": {
       "eventType": "UPDATE_USER_DETAILS",
-      "userType": ["user"]
+      "userType": ["user"],
+      "schema":{
+        "query":{          
+        },
+        "body":{
+          "$schema": "https://json-schema.org/draft-04/schema#",
+          "title": "UPDATE_USER_DETAILS_BODY",
+          "type": "object",
+          "properties": {
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "alternateMobileNo": {
+              "type": "string"
+            }
+          }
+        }
+      }
     }
   }
 }
