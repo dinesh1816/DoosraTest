@@ -8,7 +8,7 @@ do
   # Add files to staging
   git add $file
   # run eslint only on staged changes, not any un-staged changes
-  git show ":$file" | node_modules/.bin/eslint --stdin --stdin-filename "$file"
+  git show ":$file" | node_modules/.bin/eslint --stdin --stdin-filename "$file" --cache --cache-strategy content
   if [ $? -ne 0 ]; then
     echo "ESLint failed: '$file'"
     exit 1 # exit with failure status
