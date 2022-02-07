@@ -1,16 +1,15 @@
-const fs = require("fs");
-const path = require("path");
+import localConfig from "./default";
+import devConfig from "./dev";
+import prodConfig from "./prod";
 
 const config = () => {
   switch (process.env.NODE_ENV) {
     case "default":
-      return JSON.parse(
-        fs.readFileSync(path.resolve(__dirname, "default.json"))
-      );
+      return localConfig;
     case "dev":
-      return JSON.parse(fs.readFileSync(path.resolve(__dirname, "dev.json")));
+      return devConfig;
     case "production":
-      return JSON.parse(fs.readFileSync(path.resolve(__dirname, "prod.json")));
+      return prodConfig;
     default:
       throw new Error("Config variables not set");
   }
