@@ -1,8 +1,8 @@
-require('@babel/register');
-require('regenerator-runtime/runtime');
-require('core-js/stable');
+require("@babel/register");
+require("regenerator-runtime/runtime");
+require("core-js/stable");
 
-const deleteUsers = require('./DeleteData');
+const deleteUsers = require("./DeleteData");
 
 async function main() {
   await deleteUsers();
