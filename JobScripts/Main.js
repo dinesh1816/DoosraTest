@@ -1,5 +1,6 @@
-require("babel-core/register");
-require("babel-polyfill");
+require("@babel/register");
+require("regenerator-runtime/runtime");
+require("core-js/stable");
 
 const crontab = require("node-cron");
 const DeleteData = require("./DeleteData/DeleteData");
@@ -13,5 +14,5 @@ crontab.schedule(
   {
     scheduled: true,
     timezone: "Asia/Kolkata",
-  }
+  },
 );

@@ -1,5 +1,7 @@
-require("babel-core/register");
-require("babel-polyfill");
+require("@babel/register");
+require("regenerator-runtime/runtime");
+require("core-js/stable");
+
 const deleteUsers = require("./DeleteData");
 
 async function main() {

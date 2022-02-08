@@ -3,8 +3,10 @@
 /**
  * Module dependencies.
  */
-require("babel-core/register");
-require("babel-polyfill");
+require("@babel/register");
+require("regenerator-runtime/runtime");
+require("core-js/stable");
+
 const app = require("../app");
 
 const port = 4000;
