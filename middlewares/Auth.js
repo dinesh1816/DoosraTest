@@ -12,13 +12,13 @@ const secreat = "UxZAXfGONYXkvATj552wBQ";
 // Static data can be read using require or fs
 let newSessionRoutes = fs.readFileSync(
   path.resolve(__dirname, "NewSessionRoutes.json"),
-  "utf8"
+  "utf8",
 );
 newSessionRoutes = JSON.parse(newSessionRoutes);
 
 let authenticatedRoutes = fs.readFileSync(
   path.resolve(__dirname, "./AuthenticatedRoutes.json"),
-  "utf8"
+  "utf8",
 );
 authenticatedRoutes = JSON.parse(authenticatedRoutes);
 
@@ -62,7 +62,7 @@ const checkApiKeyValidity = async (req) => {
   const isValidAPIKey = await AbstractModels.mongoFindOne(
     Clients,
     selectCondition,
-    projectCondition
+    projectCondition,
   );
   return isValidAPIKey;
 };
@@ -85,8 +85,8 @@ const getRouteObj = (originalUrl, httpMethod) => {
         routeObj = routeMap[httpMethod][normalizedURL];
         isRouteObjFound = true;
       } else if (
-        routeMap[httpMethod][`${baseURL}/:param`] &&
-        index !== normalizedURL.length - 1
+        routeMap[httpMethod][`${baseURL}/:param`]
+        && index !== normalizedURL.length - 1
       ) {
         routeObj = routeMap[httpMethod][`${baseURL}/:param`];
         isRouteObjFound = true;
@@ -116,8 +116,8 @@ const checkAutorization = (req) => {
   const { userType } = session;
   const routeAutorizedUserTypes = req.routeObj.userType || [];
   if (
-    routeAutorizedUserTypes &&
-    routeAutorizedUserTypes.indexOf(userType) > -1
+    routeAutorizedUserTypes
+    && routeAutorizedUserTypes.indexOf(userType) > -1
   ) {
     isAuthorizedToAccessRoute = true;
   }
@@ -139,7 +139,7 @@ const checkBlockListedUser = async (req) => {
   const userObj = await AbstractModels.mongoFindOne(
     Users,
     selectCondition,
-    projectCondition
+    projectCondition,
   );
   if (userObj) {
     isBlockedUser = true;
@@ -173,8 +173,8 @@ export const checks = async (req, res, next) => {
   } else if (routeCategory === "noAPIKeyRoutes") {
     next();
   } else if (
-    routeCategory === "noSessionRoutes" ||
-    routeCategory === "newSessionRoutes"
+    routeCategory === "noSessionRoutes"
+    || routeCategory === "newSessionRoutes"
   ) {
     const isValidAPIKey = await checkApiKeyValidity(req);
     if (!isValidAPIKey) {

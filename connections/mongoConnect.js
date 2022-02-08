@@ -9,7 +9,7 @@ if (mainDb) {
   console.log("Unable to connect to mainDb");
 }
 export const analyticsDb = mongoose.createConnection(
-  config.analyticsDbConfig.connString
+  config.analyticsDbConfig.connString,
 );
 // .catch((error) => console.log('Mongo connection error', error));
 if (analyticsDb) {
