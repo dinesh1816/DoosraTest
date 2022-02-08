@@ -7,7 +7,7 @@ import Clients from "../models/Clients";
 
 async function getClientIdFromApiKey(apiKey) {
   const findCondition = {
-    apiKey,
+    metro_auth_key: apiKey,
   };
   const clientObj = await AbstractModels.mongoFindOne(Clients, findCondition);
   const clientId = clientObj._id;
@@ -15,7 +15,9 @@ async function getClientIdFromApiKey(apiKey) {
 }
 
 export const registerUser = async (userDetails, clientDetails) => {
-  const { mobileNo, password, firstName, lastName } = userDetails;
+  const {
+    mobileNo, password, firstName, lastName,
+  } = userDetails;
   const findCondition = {
     mobileNo,
   };
@@ -54,14 +56,15 @@ export const getUserDetails = async (mobileNo) => {
   const userObj = await AbstractModels.mongoFindOne(
     Users,
     selectCondition,
-    projectCondition
+    projectCondition,
   );
   return userObj;
 };
 
 export const updateUserDetails = async (userDetails) => {
-  const { firstName, lastName, alternateMobileNo, email, mobileNo } =
-    userDetails;
+  const {
+    firstName, lastName, alternateMobileNo, email, mobileNo,
+  } = userDetails;
   const selectCondition = {
     mobileNo,
   };

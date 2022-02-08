@@ -5,10 +5,10 @@ import * as mongoConnect from "../connections/mongoConnect";
 const { mainDb } = mongoConnect;
 
 const ClientsSchema = new Schema({
-  apiKey: {
+  metro_auth_key: {
     type: String,
   },
 });
 
-const Clients = mainDb.model("Clients", ClientsSchema, "Clients");
+const Clients = mainDb.model("Clients", ClientsSchema, "Client");
 export default Clients;
