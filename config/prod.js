@@ -22,4 +22,7 @@ export default {
     dbuser: "",
     connString: "mongodb://localhost:27017/analytics",
   },
+  redisConfig: {
+    connString: "redis://localhost:6379",
+  },
 };

@@ -2,12 +2,21 @@ import cryptoRandomString from "crypto-random-string";
 import path from "path";
 import jwt from "jsonwebtoken";
 import fs from "fs";
+import crypto from "crypto";
+
 import * as ErrorUtils from "../errors/ErrorUtils";
 import * as AbstractModels from "../models/AbstractModels";
 import Users from "../models/Users";
 import Clients from "../models/Clients";
+import RedisClient from "../connections/RedisClient";
 
-const secreat = "UxZAXfGONYXkvATj552wBQ";
+import {
+  SECREAT, ALGORITHM, PASSWORD,
+} from "../constants/Credentials";
+
+import {
+  HEADER_API_KEY, HEADER_SESSION_TOKEN,
+} from "../constants/Keys";
 
 // Static data can be read using require or fs
 let newSessionRoutes = fs.readFileSync(
@@ -51,7 +60,7 @@ const getRouteCategory = (routeMapsIndex) => {
 };
 
 const checkApiKeyValidity = async (req) => {
-  const apiKey = req.header("api-key");
+  const apiKey = req.header(HEADER_API_KEY);
   const selectCondition = {
     metro_auth_key: apiKey,
   };
@@ -66,10 +75,45 @@ const checkApiKeyValidity = async (req) => {
   );
   return isValidAPIKey;
 };
-export const getSessionObj = (req) => {
-  const sessiontoken = req.header("sessiontoken");
+
+const getRedisSession = async (sessionId) => {
+  try {
+    const redisSession = await RedisClient.get(sessionId);
+    return redisSession;
+  } catch (err) {
+    console.log("Redis connection error ", err.stack);
+    throw new Error(ErrorUtils.redisConnectionError());
+  }
+};
+
+const decrypt = (text) => {
+  let resultChiper = "";
+  // eslint-disable-next-line
+  const decipher = crypto.createDecipher(ALGORITHM, PASSWORD);
+  resultChiper = decipher.update(text, "hex", "utf8");
+  resultChiper += decipher.final("utf8");
+  return resultChiper;
+};
+
+export const getSessionObj = async (req) => {
+  const sessiontoken = req.header(HEADER_SESSION_TOKEN);
   if (!sessiontoken) throw new ErrorUtils.InvalidSessionToken();
-  const session = jwt.verify(sessiontoken, secreat);
+  // const session = jwt.verify(sessiontoken, SECREAT);
+
+  const sessionId = decrypt(sessiontoken);
+  let session = await getRedisSession(sessionId);
+  console.log("session token :", sessiontoken);
+  console.log("sessionId :", sessionId);
+  console.log("session :", session);
+
+  if (!session) {
+    throw new Error(ErrorUtils.InvalidSessionToken());
+  }
+  try {
+    session = JSON.parse(session);
+  } catch (err) {
+    throw new Error(ErrorUtils.InvalidSessionToken());
+  }
   return session;
 };
 const getRouteObj = (originalUrl, httpMethod) => {
@@ -110,9 +154,9 @@ const getRouteObj = (originalUrl, httpMethod) => {
   return routeObj;
 };
 
-const checkAutorization = (req) => {
+const checkAutorization = async (req) => {
   let isAuthorizedToAccessRoute = false;
-  const session = getSessionObj(req);
+  const session = await getSessionObj(req);
   const { userType } = session;
   const routeAutorizedUserTypes = req.routeObj.userType || [];
   if (
@@ -126,7 +170,7 @@ const checkAutorization = (req) => {
 
 const checkBlockListedUser = async (req) => {
   let isBlockedUser = false;
-  const session = getSessionObj(req);
+  const session = await getSessionObj(req);
   const { mobileNo } = session;
   const selectCondition = {
     mobileNo,
@@ -148,7 +192,7 @@ const checkBlockListedUser = async (req) => {
 };
 
 export const createSessionObj = (data) => {
-  const session = jwt.sign(data, secreat, { expiresIn: 60 * 60 * 24 * 30 }); // default is in sec
+  const session = jwt.sign(data, SECREAT, { expiresIn: 60 * 60 * 24 * 30 }); // default is in sec
   return session;
 };
 
@@ -186,7 +230,7 @@ export const checks = async (req, res, next) => {
   } else if (routeCategory === "authenticatedRoutes") {
     // 1.api key check 2.session token check 3.autorization check 4.blocklisted user check
     const isValidAPIKey = await checkApiKeyValidity(req);
-    const session = getSessionObj(req);
+    const session = await getSessionObj(req);
     if (!session) {
       const err = ErrorUtils.InvalidSessionToken();
       next(err);

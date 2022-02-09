@@ -10,19 +10,15 @@ export const InvalidRequest = () => getErrorObj(ErrorType.INVALID_REQUEST);
 
 export const InvalidAPIKey = () => getErrorObj(ErrorType.INVALID_API_KEY);
 
-export const InvalidSessionToken = () =>
-  getErrorObj(ErrorType.INVALID_SESSION_TOKEN);
+export const InvalidSessionToken = () => getErrorObj(ErrorType.INVALID_SESSION_TOKEN);
 
-export const InvalidAuthorization = () =>
-  getErrorObj(ErrorType.INVALID_AUTHORIZATION);
+export const InvalidAuthorization = () => getErrorObj(ErrorType.INVALID_AUTHORIZATION);
 
 export const BlockListedUser = () => getErrorObj(ErrorType.BLOCK_LISTED_USER);
 
-export const UserNotFoundError = () =>
-  getErrorObj(ErrorType.USER_DOES_NOT_EXIST);
+export const UserNotFoundError = () => getErrorObj(ErrorType.USER_DOES_NOT_EXIST);
 
-export const InvalidPasswordError = () =>
-  getErrorObj(ErrorType.INVALID_PASSWORD);
+export const InvalidPasswordError = () => getErrorObj(ErrorType.INVALID_PASSWORD);
 
 export const InvalidSchemaError = (err) => {
   const errorObj = {
@@ -44,11 +40,9 @@ export const DataNotFound = () => getErrorObj(ErrorType.DATA_NOT_FOUND);
 
 export const MongoError = () => getErrorObj(ErrorType.MONGO_ERROR);
 
-export const DataAlreadyExists = () =>
-  getErrorObj(ErrorType.DATA_ALREADY_EXISTS);
+export const DataAlreadyExists = () => getErrorObj(ErrorType.DATA_ALREADY_EXISTS);
 
-export const NotInSurroundingsError = () =>
-  getErrorObj(ErrorType.NOT_IN_SURROUNDINGS);
+export const NotInSurroundingsError = () => getErrorObj(ErrorType.NOT_IN_SURROUNDINGS);
 
 export const IncorrectOTP = () => getErrorObj(ErrorType.INCORRECT_OTP);
 
@@ -60,5 +54,6 @@ export const InvalidTruckId = () => getErrorObj(ErrorType.INVALID_TRUCK_ID);
 
 export const ExpiredUser = () => getErrorObj(ErrorType.EXPIRED_USER);
 
-export const NotRegisteredUser = () =>
-  getErrorObj(ErrorType.NOT_REGISTERED_USER);
+export const NotRegisteredUser = () => getErrorObj(ErrorType.NOT_REGISTERED_USER);
+
+export const redisConnectionError = () => getErrorObj(ErrorType.REDIS_CONNECTION_ERROR);

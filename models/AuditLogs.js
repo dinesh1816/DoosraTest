@@ -1,5 +1,5 @@
 import { Schema } from "mongoose";
-import { analyticsDb } from "../connections/mongoConnect";
+import { analyticsDb } from "../connections/MongoConnect";
 
 const AuditLogsSchema = new Schema({
   originalUrl: {

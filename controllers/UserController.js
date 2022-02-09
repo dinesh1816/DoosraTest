@@ -1,8 +1,13 @@
 import * as Auth from "../middlewares/Auth";
 import * as UserService from "../services/UserService";
+import {
+  HEADER_API_KEY,
+} from "../constants/Keys";
 
 export const register = async (req, res, next) => {
-  const { mobileNo, password, firstName, lastName } = req.body;
+  const {
+    mobileNo, password, firstName, lastName,
+  } = req.body;
   const userDetails = {
     mobileNo,
     password,
@@ -10,7 +15,7 @@ export const register = async (req, res, next) => {
     lastName,
   };
   const clientDetails = {
-    apiKey: req.header("api-key"),
+    metro_auth_key: req.header(HEADER_API_KEY),
   };
   const userObj = await UserService.registerUser(userDetails, clientDetails);
   req.session = Auth.createSessionObj(userObj);
@@ -22,7 +27,7 @@ export const register = async (req, res, next) => {
 };
 
 export const getUserDetails = async (req, res, next) => {
-  const sessionObj = Auth.getSessionObj(req);
+  const sessionObj = await Auth.getSessionObj(req);
   const { mobileNo } = sessionObj;
   const userObj = await UserService.getUserDetails(mobileNo);
   res.data = userObj;
@@ -30,8 +35,10 @@ export const getUserDetails = async (req, res, next) => {
 };
 
 export const updateUserDetails = async (req, res, next) => {
-  const { firstName, lastName, alternateMobileNo, email } = req.body;
-  const sessionObj = Auth.getSessionObj(req);
+  const {
+    firstName, lastName, alternateMobileNo, email,
+  } = req.body;
+  const sessionObj = await Auth.getSessionObj(req);
   const { mobileNo } = sessionObj;
   const userDetails = {
     firstName,

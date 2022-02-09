@@ -22,7 +22,6 @@ app.use(cors());
 
 app.use("*", [reqLog, checks, validate]);
 app.use("/v1/health", health);
-// app.use('/v1/posts', posts);
 app.use("/v1/user", user);
 
 app.use("*", [resSuccessLog, resErrorLog]);

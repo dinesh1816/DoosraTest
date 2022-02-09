@@ -6,7 +6,7 @@
   "description": "node js sample application",
   "main": "bin/sample_app.js",
   "scripts": {
-    "start": "node ./bin/sample_app.js",
+    "start": "nodemon ./bin/sample_app.js",
     "lint": "./node_modules/.bin/eslint \"**/*.js\" --fix --cache --cache-strategy content",
     "prepare": "husky install"
   },
@@ -25,14 +25,16 @@
     "express-async-errors": "^3.1.1",
     "json-schema": "^0.4.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.2.0",
-    "node-cron": "^3.0.0",
+    "mongoose": "^4.7.3",
+    "node-cron": "^3.0.0",    
+    "redis": "^4.0.3",
     "regenerator-runtime": "^0.13.9"
   },
   "devDependencies": {
     "eslint": "^8.8.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
-    "husky": "^7.0.4"
+    "husky": "^7.0.4",
+    "nodemon": "^2.0.15"
   }
 }
