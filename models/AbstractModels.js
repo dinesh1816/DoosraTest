@@ -1,7 +1,7 @@
 export const mongoFindOne = async (
   col,
   findCondition,
-  selectCondition = {}
+  selectCondition = {},
 ) => {
   const result = await col
     .findOne(findCondition)
@@ -14,7 +14,7 @@ export const mongoFindOne = async (
 export const mongoFindOneWithOutLean = async (
   col,
   findCondition,
-  selectCondition = {}
+  selectCondition = {},
 ) => {
   const result = await col
     .findOne(findCondition)
@@ -28,7 +28,7 @@ export const mongoFindWithSort = async (
   findCondition,
   selectCondition = {},
   limit = 0,
-  sortCondition = { _id: -1 }
+  sortCondition = { _id: -1 },
 ) => {
   const result = await col
     .find(findCondition)
@@ -44,7 +44,7 @@ export const mongoFindMany = async (
   col,
   findCondition,
   selectCondition = {},
-  limit = 0
+  limit = 0,
 ) => {
   const result = await col
     .find(findCondition)
@@ -59,7 +59,7 @@ export const mongoFindCursor = async (
   col,
   findCondition,
   selectCondition = {},
-  limit = 0
+  limit = 0,
 ) => {
   const cursor = await col
     .find(findCondition)
@@ -118,12 +118,12 @@ export const mongoFindOneAndUpdate = async (
   col,
   findCondition,
   updateCondition,
-  returnCondition
+  returnCondition,
 ) => {
   const result = await col.findOneAndUpdate(
     findCondition,
     updateCondition,
-    returnCondition
+    returnCondition,
   );
   return result;
 };

@@ -7,4 +7,8 @@ export default {
   analyticsDbConfig: {
     connString: process.env.ANALYTICS_DB_CONN_STRING,
   },
+  redisConfig: {
+    connString: "redis://localhost:6379",
+  },
+
 };

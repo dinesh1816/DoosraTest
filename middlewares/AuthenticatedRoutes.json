@@ -2,7 +2,15 @@
   "GET": {
     "/v1/user/user-details": {
       "eventType": "GET_USER_DETAILS",
-      "userType": ["user"]
+      "userType": ["user"],
+      "schema":{
+        "query":{
+
+        },
+        "body":{
+          
+        }
+      }
     }
   },
   "POST": {},

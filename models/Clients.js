@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 
-import * as mongoConnect from "../connections/mongoConnect";
+import * as mongoConnect from "../connections/MongoConnect";
 
 const { mainDb } = mongoConnect;
 

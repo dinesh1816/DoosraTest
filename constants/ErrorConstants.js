@@ -63,21 +63,6 @@ export const DATA_ALREADY_EXISTS = {
   message: "Data already exist",
 };
 
-export const NOT_IN_SURROUNDINGS = {
-  code: 1013,
-  message: "Not in the surroundings of the locality",
-};
-
-export const INVALID_LAT_LON = {
-  code: 1014,
-  message: "Incorrect latitute or longitude",
-};
-
-export const INVALID_TRUCK_ID = {
-  code: 1015,
-  message: "Invalid truck id",
-};
-
 export const EXPIRED_USER = {
   code: 1016,
   message: "Expired user",
@@ -86,4 +71,9 @@ export const EXPIRED_USER = {
 export const NOT_REGISTERED_USER = {
   code: 1017,
   message: "Not registered user",
+};
+
+export const REDIS_CONNECTION_ERROR = {
+  code: 1018,
+  message: "Redis connection error",
 };
