@@ -4,9 +4,11 @@
   "license": "ISC",
   "version": "1.0.0",
   "description": "node js sample application",
-  "main": "bin/sample_app.js",
+  "main": "bin/server.js",
   "scripts": {
-    "start": "nodemon ./bin/sample_app.js",
+    "app-prod": "pm2 restart ecosystem.config.js --only sample-micro-service --update-env",
+    "app-dev": "pm2 restart ecosystem.config.js --only sample-micro-service-dev --update-env",
+    "app-local": "pm2 restart ecosystem.config.js --only sample-micro-service-local --update-env",
     "lint": "./node_modules/.bin/eslint \"**/*.js\" --fix --cache --cache-strategy content",
     "prepare": "husky install"
   },

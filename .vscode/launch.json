@@ -15,7 +15,7 @@
                 "${workspaceFolder}/**/*.js",
                 "!**/node_modules/**"
             ],
-            "program": "${workspaceFolder}/bin/sample_app.js",
+            "program": "${workspaceFolder}/bin/server.js",
             "env": {
                 "NODE_ENV": "default"
             },
