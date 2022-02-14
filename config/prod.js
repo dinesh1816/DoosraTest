@@ -8,6 +8,6 @@ export default {
     connString: process.env.ANALYTICS_DB_CONN_STRING,
   },
   redisConfig: {
-    connString: "redis://localhost:6379",
+    connString: `redis://${process.env.REDIS_PASSWORD}@redis.notring.internal`,
   },
 };
