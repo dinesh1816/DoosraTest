@@ -7,7 +7,7 @@ import Clients from "../models/Clients";
 
 async function getClientIdFromApiKey(apiKey) {
   const findCondition = {
-    metro_auth_key: apiKey,
+    apiKey,
   };
   const clientObj = await AbstractModels.mongoFindOne(Clients, findCondition);
   const clientId = clientObj._id;

@@ -11,8 +11,14 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "outFiles": ["${workspaceFolder}/bin/**/*.js"],
-            "program": "${workspaceFolder}/bin/sample_app.js"
+            "outFiles": [
+                "${workspaceFolder}/**/*.js",
+                "!**/node_modules/**"
+            ],
+            "program": "${workspaceFolder}/bin/server.js",
+            "env": {
+                "NODE_ENV": "default"
+            },
         }
     ]
 }
