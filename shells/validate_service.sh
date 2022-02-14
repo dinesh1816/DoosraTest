@@ -2,7 +2,7 @@ is_app_running=false
 counter=0
 while [ $counter -ne 60 ]
 do
-    HTTP_RESPONSE_CODE=$(curl --max-time 1 --write-out '%{http_code}' --silent --output /dev/null http://localhost:4000/v1/health/health-check)
+    HTTP_RESPONSE_CODE=$(curl --max-time 1 --write-out '%{http_code}' --silent --output /dev/null http://localhost:14000/v1/health/health-check)
     if [ "$HTTP_RESPONSE_CODE" -ne 200 ]
     then
         echo "Error: HTTP_RESPONSE_CODE: $HTTP_RESPONSE_CODE"
