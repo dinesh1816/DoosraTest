@@ -6,7 +6,7 @@
   "description": "node js sample application",
   "main": "bin/server.js",
   "scripts": {
-    "start": "nodemon ./bin/sample_app.js",
+    "start": "nodemon ./bin/server.js",
     "app-prod": "pm2 restart ecosystem.config.js --only sample-micro-service --update-env",
     "app-dev": "pm2 restart ecosystem.config.js --only sample-micro-service-dev --update-env",
     "app-local": "pm2 restart ecosystem.config.js --only sample-micro-service-local --update-env",
