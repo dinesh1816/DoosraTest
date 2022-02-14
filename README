@@ -34,3 +34,20 @@ TODO:
 2. Integration testing
 3. Husky
 4. Sentry
+
+# Repo Name
+{service-name}-service
+
+For example:
+User service repo name should be
+
+`user-service`
+
+# Service Domain Name
+Use `doosra.com` for all service domains.\
+Subdomain name should be in plurals.\
+Dev server subdomain name should prefix `dev-` to the produciton version.
+
+For example: User service domain names should be\
+Production - `users.doosra.com`\
+Dev - `dev-users.doosra.com`
