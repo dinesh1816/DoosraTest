@@ -6,5 +6,6 @@ const router = Router();
 router.post("/register", UserController.register);
 router.get("/user-details", UserController.getUserDetails);
 router.put("/user-details", UserController.updateUserDetails);
+router.put("/unsuspend", UserController.unsuspendUser);
 
 export default router;

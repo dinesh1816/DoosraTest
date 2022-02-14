@@ -1,14 +1,23 @@
-import * as ErrorUtils from "../errors/ErrorUtils";
+import _ from "lodash";
 import * as AbstractModels from "../models/AbstractModels";
+import * as ErrorUtils from "../errors/ErrorUtils";
 import * as EncryptionService from "./EncryptionService";
 
 import Users from "../models/Users";
 import Clients from "../models/Clients";
 
+import UserActivityService from "./UserActivityService";
+
+import UserActivityConstants from "../constants/UserActivityConstants";
+import UserConstants from "../constants/UserConstants";
+
 async function getClientIdFromApiKey(apiKey) {
   const findCondition = {
     apiKey,
   };
+
+  // const client = await Clients.findOne(findCondition);
+
   const clientObj = await AbstractModels.mongoFindOne(Clients, findCondition);
   const clientId = clientObj._id;
   return clientId;
@@ -77,4 +86,36 @@ export const updateUserDetails = async (userDetails) => {
     },
   };
   await AbstractModels.mongoUpdateOne(Users, selectCondition, updateCondition);
+};
+
+export const unsuspendUser = async (userId, loggedInUserSession) => {
+  const condition = { user_id: userId, status: UserConstants.USER_STATUS.SUSPENDED };
+  const userDetails = await AbstractModels.mongoFindOne(Users, condition);
+
+  if (userDetails) {
+    const unset = ["suspend_details"];
+    let status = UserConstants.USER_STATUS.ACTIVE;
+    if (
+      _.isDate(userDetails.expire_on)
+      && userDetails.expired_at <= new Date()
+    ) {
+      status = UserConstants.USER_STATUS.EXPIRED;
+    } else {
+      unset.push("expired_at");
+    }
+
+    const updateData = [{ $set: { status } }, { $unset: unset }];
+    await AbstractModels.mongoUpdateOne(Users, condition, updateData);
+
+    UserActivityService.addToUserActivity(
+      userId,
+      loggedInUserSession?.userId,
+      UserActivityConstants.USER_ACTIVITY_ACTION.unsuspended,
+      loggedInUserSession,
+    );
+
+    return { isSuspended: true };
+  }
+
+  throw ErrorUtils.SuspendedUserNotFoundError();
 };

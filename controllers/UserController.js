@@ -1,6 +1,7 @@
 import * as Auth from "../middlewares/Auth";
 import * as UserService from "../services/UserService";
 import {
+  HEADER_SESSION_TOKEN,
   HEADER_API_KEY,
 } from "../constants/Keys";
 
@@ -51,5 +52,20 @@ export const updateUserDetails = async (req, res, next) => {
   res.data = {
     ...userDetails,
   };
+  next();
+};
+
+export const unsuspendUser = async (req, res, next) => {
+  const { userId } = req.body;
+  const sessionObj = await Auth.getSessionObj(req);
+
+  const sessionDetails = {
+    sessionId: req.headers[HEADER_SESSION_TOKEN] || "NA",
+    ip: req.headers["x-forwarded-for"] || req.connection.remoteAddress || null,
+    username: sessionObj?.username ?? "NA",
+    userId: sessionObj?.user_id,
+  };
+  res.data = await UserService.unsuspendUser(userId, sessionDetails);
+
   next();
 };

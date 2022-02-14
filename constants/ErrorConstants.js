@@ -77,3 +77,8 @@ export const REDIS_CONNECTION_ERROR = {
   code: 1018,
   message: "Redis connection error",
 };
+
+export const SUSPENDED_USER_NOT_FOUND_ERROR = {
+  code: "SUSPENDED_USER_NOT_FOUND",
+  message: "User not found",
+};

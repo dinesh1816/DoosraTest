@@ -57,3 +57,7 @@ export const ExpiredUser = () => getErrorObj(ErrorType.EXPIRED_USER);
 export const NotRegisteredUser = () => getErrorObj(ErrorType.NOT_REGISTERED_USER);
 
 export const redisConnectionError = () => getErrorObj(ErrorType.REDIS_CONNECTION_ERROR);
+
+export const SuspendedUserNotFoundError = () => getErrorObj(
+  ErrorType.SUSPENDED_USER_NOT_FOUND_ERROR,
+);
