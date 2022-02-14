@@ -19,7 +19,7 @@ pm2 -v
 # echo "---End---"
 
 # Go to app folder
-cd /home/captain/deployments/sample-micro-service
+cd /home/captain/deployments/user
 
 # start again
 if [ "$DEPLOYMENT_GROUP_NAME" = "Production" ]

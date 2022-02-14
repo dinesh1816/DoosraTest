@@ -11,7 +11,7 @@
 # pm2 -v
 
 # # Go to app folder
-# cd /home/captain/deployments/sample-micro-service
+# cd /home/captain/deployments/user
 
 # # stop running process
-# # pm2 stop sample-micro-service
+# # pm2 stop user

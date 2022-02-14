@@ -11,7 +11,7 @@ echo "PM2 Version"
 pm2 -v
 
 # Go to app folder
-cd /home/captain/deployments/sample-micro-service
+cd /home/captain/deployments/user
 
 # Installing dependencies with npm
 npm install
