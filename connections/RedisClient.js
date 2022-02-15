@@ -9,10 +9,18 @@ let RedisClient;
     url: config.redisConfig.connString,
   });
 
+  RedisClient.on("connect", () => console.log("Redis Client Initiating Connection..."));
+  RedisClient.on("ready", () => console.log("Redis Client Connected Successfully."));
+  RedisClient.on("reconnecting", () => console.log("Redis Client Reconnecting..."));
+  RedisClient.on("end", () => console.log("Redis Client Disconnected."));
   RedisClient.on("error", (err) => console.log("Redis Client Error", err));
 
-  await RedisClient.connect();
-  console.log("Redis Client Connected", RedisClient);
+  try {
+    await RedisClient.connect();
+    console.log("Redis Client Connected", RedisClient);
+  } catch (err) {
+    console.error("Redis Client Exception", err);
+  }
 })();
 
 export default RedisClient;
