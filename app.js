@@ -29,7 +29,7 @@ Sentry.init({
   // https://github.com/getsentry/sentry-javascript/issues/2292#issuecomment-977673820
   beforeSend(event) {
     const isException = event?.exception?.values[0];
-    const isHandled = isException && isException.mechanism && isException.mechanism.handled;
+    const isHandled = isException?.mechanism?.handled;
     const isMiddlewareErrors = isException?.value?.startsWith("Non-Error exception captured");
 
     if (!isHandled || !isMiddlewareErrors) {
