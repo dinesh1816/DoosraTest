@@ -118,7 +118,7 @@ export const unsuspendUser = async (userId, reason, loggedInUserSession) => {
     { ...loggedInUserSession, reason },
   );
 
-  return { isSuspended: true };
+  return { isUnsuspended: true };
 };
 
 export const tempReactivateUser = async (userId, reason, loggedInUserSession) => {
