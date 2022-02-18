@@ -10,4 +10,5 @@ export default {
   redisConfig: {
     connString: "redis://localhost:6379",
   },
+  sentry_dsn: process.env.SENTRY_DSN,
 };
