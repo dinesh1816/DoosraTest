@@ -61,3 +61,15 @@ export const redisConnectionError = () => getErrorObj(ErrorType.REDIS_CONNECTION
 export const SuspendedUserNotFoundError = () => getErrorObj(
   ErrorType.SUSPENDED_USER_NOT_FOUND_ERROR,
 );
+
+export const TerminatedUserNotFoundError = () => getErrorObj(
+  ErrorType.TERMINATED_USER_NOT_FOUND_ERROR,
+);
+
+export const VmnNotAvailableError = () => getErrorObj(
+  ErrorType.VMN_NOT_AVAILABLE_ERROR,
+);
+
+export const UserVmnIsAlreadyMappedError = () => getErrorObj(
+  ErrorType.USER_VMN_IS_ALREADY_MAPPED_ERROR,
+);

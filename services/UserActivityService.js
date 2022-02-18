@@ -1,15 +1,15 @@
 import * as AbstractModels from "../models/AbstractModels";
 import UserActivity from "../models/UserActivity";
 
-async function addToUserActivity(userId, referenceId, action, metaData) {
+export async function addToUserActivity(userId, referenceId, action, metadata) {
   const document = {
     user_id: userId,
     reference_id: referenceId ?? "NA",
     action,
-    metadata: metaData,
+    metadata,
   };
 
-  AbstractModels.mongoInsertOne(UserActivity, document);
+  await AbstractModels.mongoInsertOne(UserActivity, document);
 }
 
-export default { addToUserActivity };
+export function dummyFunction() { }

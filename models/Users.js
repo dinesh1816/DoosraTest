@@ -298,6 +298,13 @@ const IVRVirtualProfileSchema = new Schema({
   terminated_at: {
     type: Date,
   },
+  // preserve_termination: To keep the termination date intact in the following case
+  // 1. User is temp-reactivated for 48 hours (status updated to EXPIRED)
+  // 2. User again goes to termination state if account is not reactivated
+  // 3. User's termination dates should be intact in this case
+  preserve_termination: {
+    type: Boolean,
+  },
   do_ekyc_later: {
     type: Boolean,
   },
