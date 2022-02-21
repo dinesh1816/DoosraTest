@@ -1,15 +1,15 @@
 {
-  "name": "user",
+  "name": "sample_app",
   "author": "Thrivikram",
   "license": "ISC",
   "version": "1.0.0",
-  "description": "User microservice",
+  "description": "node js sample application",
   "main": "bin/server.js",
   "scripts": {
     "start": "nodemon ./bin/server.js",
-    "app-prod": "pm2 restart ecosystem.config.js --only user --update-env",
-    "app-dev": "pm2 restart ecosystem.config.js --only user-dev --update-env",
-    "app-local": "pm2 restart ecosystem.config.js --only user-local --update-env",
+    "app-prod": "pm2 restart ecosystem.config.js --only sample-micro-service --update-env",
+    "app-dev": "pm2 restart ecosystem.config.js --only sample-micro-service-dev --update-env",
+    "app-local": "pm2 restart ecosystem.config.js --only sample-micro-service-local --update-env",
     "lint": "./node_modules/.bin/eslint \"**/*.js\" --fix --cache --cache-strategy content",
     "prepare": "husky install"
   },
@@ -27,7 +27,6 @@
     "express-async-errors": "^3.1.1",
     "json-schema": "^0.4.0",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.21",
     "mongoose": "^6.2.0",
     "node-cron": "^3.0.0",
     "redis": "^4.0.3",

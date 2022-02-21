@@ -30,7 +30,7 @@ const auditLogResponse = (err, req, res) => {
   AbstractModels.mongoFindOneAndUpdate(
     AuditLogs,
     selectCondition,
-    updateCondition,
+    updateCondition
   );
 };
 

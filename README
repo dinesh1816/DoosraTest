@@ -15,7 +15,7 @@ User collection sample doc
 
 Sample Url for testing
 
-curl --location --request POST 'localhost:14000/v1/user/register' \
+curl --location --request POST 'localhost:4000/v1/user/register' \
 --header 'Content-Type: application/json' \
 --header 'api-key: 1234' \
 --data-raw '{

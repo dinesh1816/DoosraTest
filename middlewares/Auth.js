@@ -6,7 +6,7 @@ import crypto from "crypto";
 
 import * as ErrorUtils from "../errors/ErrorUtils";
 import * as AbstractModels from "../models/AbstractModels";
-// import Users from "../models/Users";
+import Users from "../models/Users";
 import Clients from "../models/Clients";
 import RedisClient from "../connections/RedisClient";
 
@@ -17,7 +17,6 @@ import {
 import {
   HEADER_API_KEY, HEADER_SESSION_TOKEN,
 } from "../constants/Keys";
-// import UserConstants from "../constants/UserConstants";
 
 // Static data can be read using require or fs
 let newSessionRoutes = fs.readFileSync(
@@ -63,10 +62,10 @@ const getRouteCategory = (routeMapsIndex) => {
 const checkApiKeyValidity = async (req) => {
   const apiKey = req.header(HEADER_API_KEY);
   const selectCondition = {
-    metro_auth_key: apiKey,
+    apiKey,
   };
   const projectCondition = {
-    metro_auth_key: 1,
+    apiKey: 1,
     _id: 0,
   };
   const isValidAPIKey = await AbstractModels.mongoFindOne(
@@ -79,8 +78,7 @@ const checkApiKeyValidity = async (req) => {
 
 const getRedisSession = async (sessionId) => {
   try {
-    // @hotfix: For backward compatibility preprending "sess:" to sessionId
-    const redisSession = await RedisClient.get(`sess:${sessionId}`);
+    const redisSession = await RedisClient.get(sessionId);
     return redisSession;
   } catch (err) {
     console.log("Redis connection error ", err.stack);
@@ -159,37 +157,38 @@ const getRouteObj = (originalUrl, httpMethod) => {
 const checkAutorization = async (req) => {
   let isAuthorizedToAccessRoute = false;
   const session = await getSessionObj(req);
-  const roles = [].concat(session?.roles);
-  const routeAutorizedRoles = req.routeObj?.roles || [];
-  if (routeAutorizedRoles?.filter((value) => roles.includes(value))?.length > 0) {
+  const { userType } = session;
+  const routeAutorizedUserTypes = req.routeObj.userType || [];
+  if (
+    routeAutorizedUserTypes
+    && routeAutorizedUserTypes.indexOf(userType) > -1
+  ) {
     isAuthorizedToAccessRoute = true;
   }
   return isAuthorizedToAccessRoute;
 };
 
-const checkBlockListedUser = async () => {
-  // @hotfix: Rewrite this logic for external users (Collection:IVRVirtualProfile)
-  const isBlockedUser = false;
+const checkBlockListedUser = async (req) => {
+  let isBlockedUser = false;
+  const session = await getSessionObj(req);
+  const { mobileNo } = session;
+  const selectCondition = {
+    mobileNo,
+    isBlockedUser: true,
+  };
+  const projectCondition = {
+    mobileNo: 1,
+    _id: 0,
+  };
+  const userObj = await AbstractModels.mongoFindOne(
+    Users,
+    selectCondition,
+    projectCondition,
+  );
+  if (userObj) {
+    isBlockedUser = true;
+  }
   return isBlockedUser;
-  // const session = await getSessionObj(req);
-  // const { mobileNo } = session;
-  // const selectCondition = {
-  //   mobileNo,
-  //   status: [UserConstants.USER_STATUS.SUSPENDED, UserConstants.USER_STATUS.TERMINATED],
-  // };
-  // const projectCondition = {
-  //   mobileNo: 1,
-  //   _id: 0,
-  // };
-  // const userObj = await AbstractModels.mongoFindOne(
-  //   Users,
-  //   selectCondition,
-  //   projectCondition,
-  // );
-  // if (userObj) {
-  //   isBlockedUser = true;
-  // }
-  // return isBlockedUser;
 };
 
 export const createSessionObj = (data) => {
@@ -236,8 +235,7 @@ export const checks = async (req, res, next) => {
       const err = ErrorUtils.InvalidSessionToken();
       next(err);
     } else {
-      const isAuthorizedToAccessRoute = await checkAutorization(req);
-
+      const isAuthorizedToAccessRoute = checkAutorization(req);
       const isBlockListeduser = await checkBlockListedUser(req);
       if (!isValidAPIKey) {
         const err = ErrorUtils.InvalidAPIKey();

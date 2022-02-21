@@ -9,7 +9,7 @@ require("core-js/stable");
 
 const app = require("../app");
 
-const port = 14000;
+const port = 4000;
 
 app
   .listen(port, () => {

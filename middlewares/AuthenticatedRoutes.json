@@ -2,13 +2,13 @@
   "GET": {
     "/v1/user/user-details": {
       "eventType": "GET_USER_DETAILS",
-      "roles": ["user"],
+      "userType": ["user"],
       "schema":{
         "query":{
 
         },
         "body":{
-
+          
         }
       }
     }
@@ -17,9 +17,9 @@
   "PUT": {
     "/v1/user/user-details": {
       "eventType": "UPDATE_USER_DETAILS",
-      "roles": ["user"],
+      "userType": ["user"],
       "schema":{
-        "query":{
+        "query":{          
         },
         "body":{
           "$schema": "https://json-schema.org/draft-04/schema#",
@@ -37,66 +37,6 @@
             },
             "alternateMobileNo": {
               "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "/v1/user/unsuspend": {
-      "eventType": "UNSUSPEND_USER",
-      "roles": ["admin"],
-      "schema":{
-        "query":{
-        },
-        "body":{
-          "$schema": "https://json-schema.org/draft-04/schema#",
-          "title": "UNSUSPEND_USER_BODY",
-          "type": "object",
-          "properties": {
-            "userId": {
-              "description": "Mising required field: userId",
-              "type": "string",
-              "required": true
-            }
-          }
-        }
-      }
-    },
-    "/v1/user/temp-reactivate": {
-      "eventType": "TEMP_REACTIVATE_USER",
-      "roles": ["admin"],
-      "schema":{
-        "query":{
-        },
-        "body":{
-          "$schema": "https://json-schema.org/draft-04/schema#",
-          "title": "TEMP_REACTIVATE_USER_BODY",
-          "type": "object",
-          "properties": {
-            "userId": {
-              "description": "Mising required field: userId",
-              "type": "string",
-              "required": true
-            }
-          }
-        }
-      }
-    },
-    "/v1/user/whitelist": {
-      "eventType": "whITELIST_USER",
-      "roles": ["admin"],
-      "schema":{
-        "query":{
-        },
-        "body":{
-          "$schema": "https://json-schema.org/draft-04/schema#",
-          "title": "whITELIST_USER_BODY",
-          "type": "object",
-          "properties": {
-            "userId": {
-              "description": "Mising required field: userId",
-              "type": "string",
-              "required": true
             }
           }
         }

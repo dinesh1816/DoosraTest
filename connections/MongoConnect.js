@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
 import config from "../config/index";
 
-mongoose.set("debug", true);
+import * as EnvUtils from "../utils/EnvUtils";
+
+if (EnvUtils.isLocal()) {
+  mongoose.set("debug", true);
+}
 
 export const mainDb = mongoose.createConnection(config.dbconfig.connString);
 // .catch((error) => console.log('Mongo connection error', error));

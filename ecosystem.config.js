@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "user-local",
+      name: "sample-micro-service-local",
       script: "./bin/server.js",
       exec_mode: "fork",
       watch: true,
@@ -11,7 +11,7 @@ module.exports = {
       time: true,
     },
     {
-      name: "user-dev",
+      name: "sample-micro-service-dev",
       script: "./bin/server.js",
       exec_mode: "cluster",
       instances: 0,
@@ -22,7 +22,7 @@ module.exports = {
       time: true,
     },
     {
-      name: "user",
+      name: "sample-micro-service",
       script: "./bin/server.js",
       exec_mode: "cluster",
       instances: 0,
