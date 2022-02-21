@@ -25,18 +25,8 @@ Sentry.init({
   dsn: config.sentry_dsn,
   environment: process.env.NODE_ENV,
   serverName: process.env.name,
-  // https://forum.sentry.io/t/how-to-filter-out-errors-which-are-handled-by-try-catch/9051/10
-  // https://github.com/getsentry/sentry-javascript/issues/2292#issuecomment-977673820
-  beforeSend(event) {
-    const isException = event?.exception?.values[0];
-    const isHandled = isException?.mechanism?.handled;
-    const isMiddlewareErrors = isException?.value?.startsWith("Non-Error exception captured");
-
-    if (!isHandled || !isMiddlewareErrors) {
-      return event;
-    }
-    return null;
-  },
+  // ignore middleware errors
+  ignoreErrors: [/^Non-Error exception captured$/],
 });
 app.use(bodyParser.json());
 app.use(cors());
