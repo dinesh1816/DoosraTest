@@ -77,3 +77,23 @@ export const REDIS_CONNECTION_ERROR = {
   code: 1018,
   message: "Redis connection error",
 };
+
+export const SUSPENDED_USER_NOT_FOUND_ERROR = {
+  code: "SUSPENDED_USER_NOT_FOUND",
+  message: "User not found",
+};
+
+export const TERMINATED_USER_NOT_FOUND_ERROR = {
+  code: "TERMINATED_USER_NOT_FOUND",
+  message: "User not found",
+};
+
+export const VMN_NOT_AVAILABLE_ERROR = {
+  code: "VMN_NOT_AVAILABLE_ERROR",
+  message: "Virtual number is not available",
+};
+
+export const USER_VMN_IS_ALREADY_MAPPED_ERROR = {
+  code: "USER_VMN_IS_ALREADY_MAPPED_ERROR",
+  message: "User has an active VMN mapped. So user cannot be whitelisted.",
+};

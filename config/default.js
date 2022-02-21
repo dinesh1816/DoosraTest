@@ -1,6 +1,6 @@
 export default {
   dbconfig: {
-    connString: "mongodb://localhost:27017/maindb",
+    connString: "mongodb://localhost:27017/dv_metro_db",
   },
   analyticsDbConfig: {
     connString: "mongodb://localhost:27017/analyticsdb",

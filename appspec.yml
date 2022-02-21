@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/captain/deployments/sample-micro-service
+    destination: /home/captain/deployments/user
 
 hooks:
   # ApplicationStop:

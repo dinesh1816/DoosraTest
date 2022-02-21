@@ -57,3 +57,19 @@ export const ExpiredUser = () => getErrorObj(ErrorType.EXPIRED_USER);
 export const NotRegisteredUser = () => getErrorObj(ErrorType.NOT_REGISTERED_USER);
 
 export const redisConnectionError = () => getErrorObj(ErrorType.REDIS_CONNECTION_ERROR);
+
+export const SuspendedUserNotFoundError = () => getErrorObj(
+  ErrorType.SUSPENDED_USER_NOT_FOUND_ERROR,
+);
+
+export const TerminatedUserNotFoundError = () => getErrorObj(
+  ErrorType.TERMINATED_USER_NOT_FOUND_ERROR,
+);
+
+export const VmnNotAvailableError = () => getErrorObj(
+  ErrorType.VMN_NOT_AVAILABLE_ERROR,
+);
+
+export const UserVmnIsAlreadyMappedError = () => getErrorObj(
+  ErrorType.USER_VMN_IS_ALREADY_MAPPED_ERROR,
+);

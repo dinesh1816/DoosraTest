@@ -1,8 +1,7 @@
 import * as Auth from "../middlewares/Auth";
 import * as UserService from "../services/UserService";
-import {
-  HEADER_API_KEY,
-} from "../constants/Keys";
+import * as SessionUtils from "../utils/SessionUtils";
+import { HEADER_API_KEY } from "../constants/Keys";
 
 export const register = async (req, res, next) => {
   const {
@@ -51,5 +50,32 @@ export const updateUserDetails = async (req, res, next) => {
   res.data = {
     ...userDetails,
   };
+  next();
+};
+
+export const unsuspendUser = async (req, res, next) => {
+  const { userId, reason } = req.body;
+  const sessionObj = await Auth.getSessionObj(req);
+  const getSessionMetadata = SessionUtils.getSessionMetadata(sessionObj, req);
+
+  res.data = await UserService.unsuspendUser(userId, reason, getSessionMetadata);
+  next();
+};
+
+export const tempReactivateUser = async (req, res, next) => {
+  const { userId, reason } = req.body;
+  const sessionObj = await Auth.getSessionObj(req);
+  const getSessionMetadata = SessionUtils.getSessionMetadata(sessionObj, req);
+
+  res.data = await UserService.tempReactivateUser(userId, reason, getSessionMetadata);
+  next();
+};
+
+export const whitelistUser = async (req, res, next) => {
+  const { userId, reason } = req.body;
+  const sessionObj = await Auth.getSessionObj(req);
+  const getSessionMetadata = SessionUtils.getSessionMetadata(sessionObj, req);
+
+  res.data = await UserService.whitelistUser(userId, reason, getSessionMetadata);
   next();
 };
