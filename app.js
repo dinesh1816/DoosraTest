@@ -24,6 +24,7 @@ const app = express();
 Sentry.init({
   dsn: config.sentry_dsn,
   environment: process.env.NODE_ENV,
+  // name is set in ecosystem config file
   serverName: process.env.name,
   // ignore middleware errors
   ignoreErrors: [/^Non-Error exception captured$/],
