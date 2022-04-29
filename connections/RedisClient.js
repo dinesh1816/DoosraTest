@@ -17,7 +17,7 @@ let RedisClient;
 
   try {
     await RedisClient.connect();
-    console.log("Redis Client Connected", RedisClient);
+    console.log("Redis Client Connected");
   } catch (err) {
     console.error("Redis Client Exception", err);
   }

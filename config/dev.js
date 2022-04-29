@@ -1,7 +1,7 @@
 import "dotenv/config";
 
 export default {
-  dbconfig: {
+  mainDbconfig: {
     connString: process.env.MAIN_DB_CONN_STRING, // Change all required config to env variables
   },
   analyticsDbConfig: {

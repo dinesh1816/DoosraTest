@@ -1,5 +1,5 @@
 export default {
-  dbconfig: {
+  mainDbconfig: {
     connString: "mongodb://localhost:27017/maindb",
   },
   analyticsDbConfig: {

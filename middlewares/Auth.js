@@ -82,7 +82,7 @@ const getRedisSession = async (sessionId) => {
     return redisSession;
   } catch (err) {
     console.log("Redis connection error ", err.stack);
-    throw new Error(ErrorUtils.redisConnectionError());
+    throw ErrorUtils.redisConnectionError();
   }
 };
 
@@ -97,7 +97,7 @@ const decrypt = (text) => {
 
 export const getSessionObj = async (req) => {
   const sessiontoken = req.header(HEADER_SESSION_TOKEN);
-  if (!sessiontoken) throw new ErrorUtils.InvalidSessionToken();
+  if (!sessiontoken) throw ErrorUtils.InvalidSessionToken();
   // const session = jwt.verify(sessiontoken, SECREAT);
 
   const sessionId = decrypt(sessiontoken);
@@ -107,12 +107,12 @@ export const getSessionObj = async (req) => {
   console.log("session :", session);
 
   if (!session) {
-    throw new Error(ErrorUtils.InvalidSessionToken());
+    throw ErrorUtils.InvalidSessionToken();
   }
   try {
     session = JSON.parse(session);
   } catch (err) {
-    throw new Error(ErrorUtils.InvalidSessionToken());
+    throw ErrorUtils.InvalidSessionToken();
   }
   return session;
 };

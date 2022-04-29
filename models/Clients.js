@@ -1,8 +1,6 @@
 import { Schema } from "mongoose";
 
-import * as mongoConnect from "../connections/MongoConnect";
-
-const { mainDb } = mongoConnect;
+import { mainDb } from "../connections/MainDb";
 
 const ClientsSchema = new Schema({
   apiKey: {

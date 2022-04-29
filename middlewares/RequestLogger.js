@@ -3,7 +3,7 @@ import * as Auth from "./Auth";
 
 import AuditLogs from "../models/AuditLogs";
 
-const auditLogRequest = (req) => {
+const auditLogRequest = async (req) => {
   const doc = {
     originalUrl: req.originalUrl,
     method: req.method,
@@ -17,7 +17,7 @@ const auditLogRequest = (req) => {
   if (apiKey) {
     doc.apiKey = apiKey;
   }
-  AbstractModels.mongoInsertOne(AuditLogs, doc);
+  await AbstractModels.mongoInsertOne(AuditLogs, doc);
 };
 
 const reqLog = (req, res, next) => {

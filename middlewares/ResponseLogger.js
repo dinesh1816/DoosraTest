@@ -30,7 +30,7 @@ const auditLogResponse = (err, req, res) => {
   AbstractModels.mongoFindOneAndUpdate(
     AuditLogs,
     selectCondition,
-    updateCondition
+    updateCondition,
   );
 };
 
@@ -42,12 +42,14 @@ export const resSuccessLog = (req, res) => {
   if (routeCategory !== "healthCheckRoutes") {
     auditLogResponse(null, req, res);
   }
+  res.setHeader("requestId", req.routeObj.requestId);
   res.status(res.statusCode || 200).send({ status: true, response: res.data });
 };
 
 export const resErrorLog = (err, req, res, next) => {
   auditLogResponse(err, req, res);
-  next(err);
+  // next(err);
+  res.setHeader("requestId", req.routeObj.requestId);
   res.status(res.statusCode || 200).send({
     status: false,
     response: {
