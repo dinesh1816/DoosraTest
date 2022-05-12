@@ -9,17 +9,17 @@ let RedisClient;
     url: config.redisConfig.connString,
   });
 
-  RedisClient.on("connect", () => logToJSON("info", "Redis Client Initiating Connection..."));
-  RedisClient.on("ready", () => logToJSON("info", "Redis Client Connected Successfully."));
-  RedisClient.on("reconnecting", () => logToJSON("info", "Redis Client Reconnecting..."));
-  RedisClient.on("end", () => logToJSON("info", "Redis Client Disconnected."));
-  RedisClient.on("error", (err) => logToJSON("info", "Redis Client Error", err));
+  RedisClient.on("connect", () => logToJSON("info", { redisConnection: "connect" }));
+  RedisClient.on("ready", () => logToJSON("info", { redisConnection: "ready" }));
+  RedisClient.on("reconnecting", () => logToJSON("info", { redisConnection: "reconnecting" }));
+  RedisClient.on("end", () => logToJSON("info", { redisConnection: "disconnected" }));
+  RedisClient.on("error", (error) => logToJSON("info", { error }));
 
   try {
     await RedisClient.connect();
-    logToJSON("info", "Redis Client Connected");
-  } catch (err) {
-    logToJSON("error", "Redis Client Exception", err);
+    logToJSON("info", { redisConnection: "connected" });
+  } catch (error) {
+    logToJSON("error", { error });
   }
 })();
 

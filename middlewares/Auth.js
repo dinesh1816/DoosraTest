@@ -80,8 +80,8 @@ const getRedisSession = async (sessionId) => {
   try {
     const redisSession = await RedisClient.get(sessionId);
     return redisSession;
-  } catch (err) {
-    logToJSON("info", "Redis connection error ", err.stack);
+  } catch (error) {
+    logToJSON("error", { error });
     throw ErrorUtils.redisConnectionError();
   }
 };
@@ -102,16 +102,14 @@ export const getSessionObj = async (req) => {
 
   const sessionId = decrypt(sessiontoken);
   let session = await getRedisSession(sessionId);
-  logToJSON("info", "session token :", sessiontoken);
-  logToJSON("info", "sessionId :", sessionId);
-  logToJSON("info", "session :", session);
+  logToJSON("info", { session, sessionId, sessiontoken });
 
   if (!session) {
     throw ErrorUtils.InvalidSessionToken();
   }
   try {
     session = JSON.parse(session);
-  } catch (err) {
+  } catch (error) {
     throw ErrorUtils.InvalidSessionToken();
   }
   return session;
@@ -210,8 +208,8 @@ For each req store req, res audits
 export const checks = async (req, res, next) => {
   const { routeCategory } = req.routeObj;
   if (routeCategory === "others") {
-    const err = ErrorUtils.InvalidRequest();
-    next(err);
+    const error = ErrorUtils.InvalidRequest();
+    next(error);
   } else if (routeCategory === "healthCheckRoutes") {
     next();
   } else if (routeCategory === "noAPIKeyRoutes") {
@@ -222,8 +220,8 @@ export const checks = async (req, res, next) => {
   ) {
     const isValidAPIKey = await checkApiKeyValidity(req);
     if (!isValidAPIKey) {
-      const err = ErrorUtils.InvalidAPIKey();
-      next(err);
+      const error = ErrorUtils.InvalidAPIKey();
+      next(error);
     } else {
       next();
     }
@@ -232,20 +230,20 @@ export const checks = async (req, res, next) => {
     const isValidAPIKey = await checkApiKeyValidity(req);
     const session = await getSessionObj(req);
     if (!session) {
-      const err = ErrorUtils.InvalidSessionToken();
-      next(err);
+      const error = ErrorUtils.InvalidSessionToken();
+      next(error);
     } else {
       const isAuthorizedToAccessRoute = checkAutorization(req);
       const isBlockListeduser = await checkBlockListedUser(req);
       if (!isValidAPIKey) {
-        const err = ErrorUtils.InvalidAPIKey();
-        next(err);
+        const error = ErrorUtils.InvalidAPIKey();
+        next(error);
       } else if (isBlockListeduser) {
-        const err = ErrorUtils.BlockListedUser();
-        next(err);
+        const error = ErrorUtils.BlockListedUser();
+        next(error);
       } else if (!isAuthorizedToAccessRoute) {
-        const err = ErrorUtils.InvalidAuthorization();
-        next(err);
+        const error = ErrorUtils.InvalidAuthorization();
+        next(error);
       } else {
         req.sesssion = session;
         next();

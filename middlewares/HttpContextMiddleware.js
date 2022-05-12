@@ -87,16 +87,16 @@ export function setHttpContextResponsePayload(req, res, next) {
   next();
 }
 
-export function setHttpContextErrorResponsePayload(err, req, res, next) {
+export function setHttpContextErrorResponsePayload(error, req, res, next) {
   const out = {
     headers: res.getHeaders(),
-    error: err,
+    error,
   };
   setHttpContextDynamicRoutePath(req);
   httpContext.set(Constants.LOGGER_RESPONSE_PAYLOAD, _.cloneDeep(out));
   httpContext.set(Constants.LOGGER_RESPONSE_TIME, getResponseTime());
-  logToJSON("error", "Error Response Middleware");
-  next(err);
+  logToJSON("error", { error });
+  next(error);
 }
 
 export function setHttpContextUrlRedirectionObj(urlRedirectionObj) {

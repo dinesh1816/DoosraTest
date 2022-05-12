@@ -20,7 +20,7 @@ app
   })
   .on("error", (error) => {
     if (error.code === "EADDRINUSE") {
-      logToJSON("info", "port is already in use");
+      logToJSON("error", "port is already in use");
     } else {
       logToJSON("error", { error });
     }
