@@ -5,6 +5,8 @@ import {
 } from "../constants/Keys";
 
 export const register = async (req, res, next) => {
+  logToJSON("info", process.env);
+  logToJSON("info", "hello");
   const {
     mobileNo, password, firstName, lastName,
   } = req.body;

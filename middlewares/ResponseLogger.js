@@ -27,6 +27,7 @@ const auditLogResponse = (err, req, res) => {
   } else {
     updateCondition.response = res.data;
   }
+  logToJSON("info", updateCondition);
   AbstractModels.mongoFindOneAndUpdate(
     AuditLogs,
     selectCondition,
@@ -46,7 +47,7 @@ export const resSuccessLog = (req, res) => {
   res.status(res.statusCode || 200).send({ status: true, response: res.data });
 };
 
-export const resErrorLog = (err, req, res, next) => {
+export const resErrorLog = (err, req, res) => {
   auditLogResponse(err, req, res);
   // next(err);
   res.setHeader("requestId", req.routeObj.requestId);

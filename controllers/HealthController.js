@@ -1,6 +1,6 @@
 const healthCheck = async (req, res, next) => {
   res.data = {};
-  console.log("I am in heakth");
+  logToJSON("info", "I am in heakth");
   next();
 };
 

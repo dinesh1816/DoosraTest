@@ -17,6 +17,9 @@ import reqLog from "./middlewares/RequestLogger";
 import { checks } from "./middlewares/Auth";
 import { resSuccessLog, resErrorLog } from "./middlewares/ResponseLogger";
 import { validate } from "./middlewares/SchemaValidator";
+import * as HttpContextMiddleware from "./middlewares/HttpContextMiddleware";
+
+const httpContext = require("express-http-context");
 
 const app = express();
 
@@ -31,6 +34,13 @@ Sentry.init({
 });
 app.use(bodyParser.json());
 app.use(cors());
+// init httpcontext
+app.use(httpContext.middleware);
+
+// set http context
+app.use(HttpContextMiddleware.setHttpContextMetrics);
+app.use(HttpContextMiddleware.setHttpContextUserDetails);
+app.use(HttpContextMiddleware.setHttpContextRequestPayload);
 
 app.use("*", [reqLog, checks, validate]);
 app.use("/v1/health", health);
@@ -38,6 +48,12 @@ app.use("/v1/user", user);
 
 // The error handler must be before any other error middleware and after all controllers
 app.use(Sentry.Handlers.errorHandler());
+
+// attach response payload
+app.use(HttpContextMiddleware.setHttpContextResponsePayload);
+
+// attach response payload on error
+app.use(HttpContextMiddleware.setHttpContextErrorResponsePayload);
 
 app.use("*", [resSuccessLog, resErrorLog]);
 

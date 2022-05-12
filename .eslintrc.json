@@ -1,4 +1,7 @@
 {
+  "globals": {
+    "logToJSON": "readonly"
+  },
   "env": {
     "es2021": true,
     "node": true

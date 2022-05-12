@@ -81,7 +81,7 @@ const getRedisSession = async (sessionId) => {
     const redisSession = await RedisClient.get(sessionId);
     return redisSession;
   } catch (err) {
-    console.log("Redis connection error ", err.stack);
+    logToJSON("info", "Redis connection error ", err.stack);
     throw ErrorUtils.redisConnectionError();
   }
 };
@@ -102,9 +102,9 @@ export const getSessionObj = async (req) => {
 
   const sessionId = decrypt(sessiontoken);
   let session = await getRedisSession(sessionId);
-  console.log("session token :", sessiontoken);
-  console.log("sessionId :", sessionId);
-  console.log("session :", session);
+  logToJSON("info", "session token :", sessiontoken);
+  logToJSON("info", "sessionId :", sessionId);
+  logToJSON("info", "session :", session);
 
   if (!session) {
     throw ErrorUtils.InvalidSessionToken();
