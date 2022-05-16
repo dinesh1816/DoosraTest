@@ -5,7 +5,6 @@ import { JSONPath } from "jsonpath-plus";
 import * as Constants from "../constants/Constants";
 
 require("winston-daily-rotate-file");
-const util = require("util");
 const lodash = require("lodash");
 const httpContext = require("express-http-context");
 const fs = require("fs");
@@ -112,27 +111,27 @@ function doosraTrace() {
   const orig = Error.prepareStackTrace;
   Error.prepareStackTrace = (_, stack) => stack;
   const err = new Error();
-  Error.captureStackTrace(err, logToJSON);
+  Error.captureStackTrace(err, log);
   const { stack } = err;
   Error.prepareStackTrace = orig;
   const filename = path.basename(stack[0].getFileName());
-  const functionName = stack[8] ? stack[8].getFunctionName() : "";
+  const functionName = stack[0] ? stack[0].getFunctionName() : "";
   return { filename, functionName };
 }
 
 function jsonStringifyLog(log) {
-  const jsonLog = lodash.cloneDeep(log);
+  const tempLog = lodash.cloneDeep(log);
   try {
-    jsonLog.message = util.inspect(jsonLog.message);
-    jsonLog.request = util.inspect(jsonLog.request);
-    jsonLog.response = util.inspect(jsonLog.response);
+    tempLog.message = JSON.stringify(tempLog.message);
+    tempLog.request = JSON.stringify(tempLog.request);
+    tempLog.response = JSON.stringify(tempLog.response);
   } catch (error) {
-    logToJSON("error", { error });
+    console.error("error", { error });
   }
-  return jsonLog;
+  return tempLog;
 }
 
-global.logToJSON = function (level, message) {
+global.log = function (level, message) {
   const localLevel = level || "info";
   const { filename, functionName } = doosraTrace();
   let log = {
@@ -149,6 +148,7 @@ global.logToJSON = function (level, message) {
   };
   log = maskSensitiveData(log);
   const logger = getInstanceOfLogger();
+  // message, request, response are json stringified
   logger.log(localLevel, jsonStringifyLog(log));
   return log;
 };

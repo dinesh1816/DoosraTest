@@ -81,7 +81,7 @@ const getRedisSession = async (sessionId) => {
     const redisSession = await RedisClient.get(sessionId);
     return redisSession;
   } catch (error) {
-    logToJSON("error", { error });
+    log("error", { error });
     throw ErrorUtils.redisConnectionError();
   }
 };
@@ -102,7 +102,7 @@ export const getSessionObj = async (req) => {
 
   const sessionId = decrypt(sessiontoken);
   let session = await getRedisSession(sessionId);
-  logToJSON("info", { session, sessionId, sessiontoken });
+  log("info", { session, sessionId, sessiontoken });
 
   if (!session) {
     throw ErrorUtils.InvalidSessionToken();

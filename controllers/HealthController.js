@@ -1,6 +1,6 @@
 const healthCheck = async (req, res, next) => {
   res.data = {};
-  logToJSON("info", "health check");
+  log("info", "health check");
   next();
 };
 

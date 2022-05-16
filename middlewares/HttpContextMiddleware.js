@@ -16,7 +16,6 @@ export function setHttpContextMetrics(req, res, next) {
   httpContext.set(Constants.LOGGER_REQUEST_START_TIME, process.hrtime.bigint());
   httpContext.set(Constants.LOGGER_API_ROUTE, req.path);
   httpContext.set(Constants.LOGGER_USER_IP_ADDRESS, req.headers["x-forwarded-for"] || req.connection.remoteAddress);
-  httpContext.set(Constants.LOGGER_EXPERIMENT_RANDOMNUMBER, (Math.floor(Math.random() * 100) + 1));
   next();
 }
 
@@ -32,6 +31,10 @@ export function setHttpContextUserDetails(req, res, next) {
   next();
 }
 
+// unable to capture dynamic url path in request middleware
+// req.route.path is populated when it hits matched route only
+// is captured in response middleware
+// http://expressjs.com/en/api.html#req.route
 export function setHttpContextRequestPayload(req, res, next) {
   httpContext.set(Constants.LOGGER_REQUEST_PAYLOAD, {
     // clone
@@ -71,7 +74,7 @@ function getResponseTime() {
       timeDiff = (endTime - startTime) / nanoToMilli;
     }
   } catch (error) {
-    logToJSON("error", { error });
+    log("error", { error });
   }
   return `${timeDiff}ms`;
 }
@@ -95,12 +98,5 @@ export function setHttpContextErrorResponsePayload(error, req, res, next) {
   setHttpContextDynamicRoutePath(req);
   httpContext.set(Constants.LOGGER_RESPONSE_PAYLOAD, _.cloneDeep(out));
   httpContext.set(Constants.LOGGER_RESPONSE_TIME, getResponseTime());
-  logToJSON("error", { error });
   next(error);
-}
-
-export function setHttpContextUrlRedirectionObj(urlRedirectionObj) {
-  if (urlRedirectionObj) {
-    httpContext.set(Constants.LOGGER_URL_REDIRECTION_OBJ, urlRedirectionObj);
-  }
 }

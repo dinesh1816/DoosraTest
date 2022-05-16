@@ -16,13 +16,13 @@ const port = 4000;
 
 app
   .listen(port, () => {
-    logToJSON("info", `Listening on port ${port}`);
+    log("info", `Listening on port ${port}`);
   })
   .on("error", (error) => {
     if (error.code === "EADDRINUSE") {
-      logToJSON("error", "port is already in use");
+      log("error", "port is already in use");
     } else {
-      logToJSON("error", { error });
+      log("error", { error });
     }
     process.exit(1);
   });

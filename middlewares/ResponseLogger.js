@@ -1,7 +1,7 @@
 import * as AbstractModels from "../models/AbstractModels";
 import AuditLogs from "../models/AuditLogs";
 
-const auditLogResponse = (err, req, res) => {
+const auditLogResponse = (error, req, res) => {
   const selectCondition = {
     requestId: req.routeObj.requestId,
   };
@@ -18,16 +18,16 @@ const auditLogResponse = (err, req, res) => {
     updateCondition.routeCategory = req.routeObj.routeCategory;
   }
 
-  if (err) {
+  if (error) {
     updateCondition.response = {
-      code: err.code || 1000,
-      reason: err.message,
+      code: error.code || 1000,
+      reason: error.message,
     };
     updateCondition.status = false;
   } else {
     updateCondition.response = res.data;
   }
-  logToJSON("info", updateCondition);
+  log("info", updateCondition);
   AbstractModels.mongoFindOneAndUpdate(
     AuditLogs,
     selectCondition,
@@ -47,15 +47,19 @@ export const resSuccessLog = (req, res) => {
   res.status(res.statusCode || 200).send({ status: true, response: res.data });
 };
 
-export const resErrorLog = (err, req, res) => {
-  auditLogResponse(err, req, res);
-  // next(err);
+export const resErrorLog = (error, req, res, next) => {
+  auditLogResponse(error, req, res);
+  if (res.headersSent) {
+    return next(error);
+  }
   res.setHeader("requestId", req.routeObj.requestId);
-  res.status(res.statusCode || 200).send({
+  log("error", error.stack);
+  res.status(error.statusCode);
+  return res.send({
     status: false,
     response: {
-      code: err.code || 1000,
-      reason: err.message,
+      code: error.code || 1000,
+      reason: error.message,
     },
   });
 };

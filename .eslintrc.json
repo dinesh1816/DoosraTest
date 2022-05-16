@@ -1,6 +1,6 @@
 {
   "globals": {
-    "logToJSON": "readonly"
+    "log": "readonly"
   },
   "env": {
     "es2021": true,
