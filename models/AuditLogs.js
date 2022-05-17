@@ -18,7 +18,7 @@ const AuditLogsSchema = new Schema({
     type: String,
     required: true,
   },
-  requestId: {
+  correlationId: {
     type: String,
     required: true,
   },

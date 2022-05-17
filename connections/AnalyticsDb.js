@@ -44,6 +44,4 @@ analyticsDb.on("disconnected", () => {
   setTimeout(() => { analyticsDb.openUri(CONN_URL).catch(() => { }); }, RECONNECT_TIME);
 });
 
-module.exports = {
-  analyticsDb,
-};
+export default analyticsDb;

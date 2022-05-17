@@ -2,17 +2,8 @@ import * as Constants from "../constants/Constants";
 
 const httpContext = require("express-http-context");
 const _ = require("lodash");
-const uuid = require("uuid");
 
 export function setHttpContextMetrics(req, res, next) {
-  let correlationId = req.get(Constants.LOGGER_CORRELATIONID);
-  if (!correlationId) {
-    // generate and set uuid v4 version
-    correlationId = uuid.v4();
-    httpContext.set(Constants.LOGGER_CORRELATIONID, correlationId);
-    // inject correlationId in headers
-    req.headers.correlationId = correlationId;
-  }
   httpContext.set(Constants.LOGGER_REQUEST_START_TIME, process.hrtime.bigint());
   httpContext.set(Constants.LOGGER_API_ROUTE, req.path);
   httpContext.set(Constants.LOGGER_USER_IP_ADDRESS, req.headers["x-forwarded-for"] || req.connection.remoteAddress);

@@ -1,8 +1,8 @@
-import cryptoRandomString from "crypto-random-string";
 import path from "path";
 import jwt from "jsonwebtoken";
 import fs from "fs";
 import crypto from "crypto";
+import * as Constants from "../constants/Constants";
 
 import * as ErrorUtils from "../errors/ErrorUtils";
 import * as AbstractModels from "../models/AbstractModels";
@@ -18,6 +18,8 @@ import {
   HEADER_API_KEY, HEADER_SESSION_TOKEN,
 } from "../constants/Keys";
 
+const httpContext = require("express-http-context");
+
 // Static data can be read using require or fs
 let newSessionRoutes = fs.readFileSync(
   path.resolve(__dirname, "NewSessionRoutes.json"),
@@ -31,9 +33,10 @@ let authenticatedRoutes = fs.readFileSync(
 );
 authenticatedRoutes = JSON.parse(authenticatedRoutes);
 
-const noSessionRoutes = require("./NoSessionRoutes.json");
-const noAPIKeyRoutes = require("./NoClientIdRoutes.json");
+const uuid = require("uuid");
 const healthCheckRoutes = require("./HealthCheckRoutes.json");
+const noAPIKeyRoutes = require("./NoClientIdRoutes.json");
+const noSessionRoutes = require("./NoSessionRoutes.json");
 
 const routeMaps = [
   newSessionRoutes,
@@ -252,13 +255,21 @@ export const checks = async (req, res, next) => {
   }
 };
 
-export const injectRequestId = (req) => {
+export const setMetrics = (req, res) => {
   const { originalUrl } = req;
   const httpMethod = req.method;
   const routeObj = getRouteObj(originalUrl, httpMethod);
-
-  routeObj.requestId = cryptoRandomString({ length: 15 });
   routeObj.startTime = new Date().getTime();
+
+  let correlationId = req.get(Constants.LOGGER_CORRELATIONID);
+  if (!correlationId) {
+    // generate and set uuid v4 version
+    correlationId = uuid.v4();
+    httpContext.set(Constants.LOGGER_CORRELATIONID, correlationId);
+    // inject correlationId in headers
+    req.headers.correlationId = httpContext.get(Constants.LOGGER_CORRELATIONID);
+    res.set("CorrelationId", httpContext.get(Constants.LOGGER_CORRELATIONID));
+  }
 
   return routeObj;
 };

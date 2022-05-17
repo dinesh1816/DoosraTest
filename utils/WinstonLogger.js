@@ -130,9 +130,14 @@ function jsonStringifyLog(log) {
   }
   return tempLog;
 }
-
+/**
+ * 
+ * @param {*} level 
+ * @param {*} message 
+ * message, request, response values are json strings
+ */
 global.log = function (level, message) {
-  const localLevel = level || "info";
+  const logLevel = level || "info";
   const { filename, functionName } = doosraTrace();
   let log = {
     correlationId: httpContext.get(Constants.LOGGER_CORRELATIONID) || "",
@@ -149,6 +154,5 @@ global.log = function (level, message) {
   log = maskSensitiveData(log);
   const logger = getInstanceOfLogger();
   // message, request, response are json stringified
-  logger.log(localLevel, jsonStringifyLog(log));
-  return log;
+  logger.log(logLevel, jsonStringifyLog(log));
 };

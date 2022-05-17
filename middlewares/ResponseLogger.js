@@ -3,7 +3,7 @@ import AuditLogs from "../models/AuditLogs";
 
 const auditLogResponse = (error, req, res) => {
   const selectCondition = {
-    requestId: req.routeObj.requestId,
+    correlationId: req.headers.correlationId,
   };
   const updateCondition = {
     status: true,
@@ -43,17 +43,15 @@ export const resSuccessLog = (req, res) => {
   if (routeCategory !== "healthCheckRoutes") {
     auditLogResponse(null, req, res);
   }
-  res.setHeader("requestId", req.routeObj.requestId);
   res.status(res.statusCode || 200).send({ status: true, response: res.data });
 };
 
 export const resErrorLog = (error, req, res, next) => {
+  log("error", error.stack);
   auditLogResponse(error, req, res);
   if (res.headersSent) {
     return next(error);
   }
-  res.setHeader("requestId", req.routeObj.requestId);
-  log("error", error.stack);
   res.status(error.statusCode);
   return res.send({
     status: false,
