@@ -1,5 +1,5 @@
 import * as AbstractModels from "../models/AbstractModels";
-import AuditLogs from "../models/AuditLogs";
+import { AuditLogs } from "../connections/AnalyticsDb";
 
 const auditLogResponse = (error, req, res) => {
   const selectCondition = {
@@ -27,7 +27,6 @@ const auditLogResponse = (error, req, res) => {
   } else {
     updateCondition.response = res.data;
   }
-  log("info", updateCondition);
   AbstractModels.mongoFindOneAndUpdate(
     AuditLogs,
     selectCondition,

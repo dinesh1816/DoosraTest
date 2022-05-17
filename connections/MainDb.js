@@ -3,7 +3,7 @@
 import mongoose from "mongoose";
 import config from "../config/index";
 
-mongoose.set("debug", true);
+// mongoose.set("debug", true);
 
 let mainDb;
 

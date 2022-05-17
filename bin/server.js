@@ -9,6 +9,10 @@ require("core-js/stable");
 const WinstonLogger = require("../utils/WinstonLogger");
 // init
 WinstonLogger.init();
+// analytics db
+const analyticsDbConnection = require("../connections/AnalyticsDb");
+
+log("info", analyticsDbConnection);
 
 const app = require("../app");
 

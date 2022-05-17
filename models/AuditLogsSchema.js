@@ -1,5 +1,4 @@
 import { Schema } from "mongoose";
-import { analyticsDb } from "../connections/AnalyticsDb";
 
 const AuditLogsSchema = new Schema({
   originalUrl: {
@@ -56,5 +55,4 @@ const AuditLogsSchema = new Schema({
   },
 });
 
-const AuditLogs = analyticsDb.model("AuditLogs", AuditLogsSchema, "AuditLogs");
-export default AuditLogs;
+export default AuditLogsSchema;

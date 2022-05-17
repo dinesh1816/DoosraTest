@@ -1,7 +1,7 @@
 import * as AbstractModels from "../models/AbstractModels";
 import * as Auth from "./Auth";
 
-import AuditLogs from "../models/AuditLogs";
+import { AuditLogs } from "../connections/AnalyticsDb";
 
 const auditLogRequest = async (req) => {
   const doc = {
