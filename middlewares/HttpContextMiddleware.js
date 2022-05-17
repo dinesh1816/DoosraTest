@@ -56,6 +56,14 @@ export function setHttpContextRequestPayload(req, res, next) {
   next();
 }
 
+/**
+ *
+ * @param {*} req
+ *
+ * https://expressjs.com/en/api.html#req.route
+ * Contains the currently-matched route, a string.
+ * req.route.path is update on matched route and available in response middleware.
+ */
 function setHttpContextDynamicRoutePath(req) {
   const requestPayload = httpContext.get(Constants.LOGGER_REQUEST_PAYLOAD);
   if (requestPayload && requestPayload.urlDetails) {
