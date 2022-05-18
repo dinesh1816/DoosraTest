@@ -1,4 +1,4 @@
-import { request, assert } from "../test-helper";
+import { request, assert } from "../TestHelper";
 
 describe("GET /health/health-check", () => {
   it("Response body status should be true", async () => {
