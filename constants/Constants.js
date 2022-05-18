@@ -6,5 +6,4 @@ export const LOGGER_API_ROUTE = "loggerRoute";
 export const LOGGER_USER_IP_ADDRESS = "loggerUserIpAddress";
 export const LOGGER_CORRELATIONID = "loggerCorrelationId";
 export const LOGGER_RESPONSE_TIME = "loggerResponseTime";
-export const LOGGER_EXPERIMENT_RANDOMNUMBER = "loggerExperimentRandomNumber";
 export const LOGGER_URL_REDIRECTION_OBJ = "loggerUrlRedirectionObj";
