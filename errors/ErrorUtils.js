@@ -24,10 +24,13 @@ export function InvalidRequest() {
   );
 }
 
-export const InvalidAPIKey = () => ErrorUtils(
-  ErrorType.INVALID_API_KEY,
-  RESPONSE_STATUS_400_BAD_REQUEST,
-);
+export function InvalidAPIKey() {
+  return new ErrorUtils(
+    InvalidAPIKey,
+    ErrorType.INVALID_API_KEY,
+    RESPONSE_STATUS_400_BAD_REQUEST,
+  );
+}
 
 export const InvalidSessionToken = () => ErrorUtils(
   ErrorType.INVALID_SESSION_TOKEN,

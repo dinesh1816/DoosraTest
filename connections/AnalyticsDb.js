@@ -3,23 +3,15 @@
 import mongoose from "mongoose";
 import config from "../config/index";
 
-// load schemas
-import AuditLogsSchema from "../models/AuditLogsSchema";
-
 let conn;
 
-function init() {
+export function init() {
   const RECONNECT_TIME = 5000;
   const CONN_URL = config.analyticsDbConfig.connString;
 
   if (conn) {
     return conn;
   }
-
-  mongoose.set("debug", (collectionName, methodName, ...methodArgs) => {
-    // use custom function to log collection methods + arguments
-    log("info", `Mongoose: ${collectionName}.${methodName}(${methodArgs.join(", ")})`);
-  });
 
   log("info", `CONN_URL to connect to analytics database ${CONN_URL}`);
   conn = mongoose.createConnection(CONN_URL);
@@ -53,7 +45,7 @@ function init() {
 
   return conn;
 }
-init();
 
-/* eslint-disable-next-line */
-export const AuditLogs = conn.model("AuditLogs", AuditLogsSchema, "AuditLogs");
+export function getInstanceOfDbConnection() {
+  return conn;
+}

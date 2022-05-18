@@ -6,8 +6,8 @@ import * as Constants from "../constants/Constants";
 
 import * as ErrorUtils from "../errors/ErrorUtils";
 import * as AbstractModels from "../models/AbstractModels";
-import Users from "../models/Users";
-import Clients from "../models/Clients";
+import { Users, Clients } from "../models/mainDBSchemas/index";
+
 import RedisClient from "../connections/RedisClient";
 
 import {

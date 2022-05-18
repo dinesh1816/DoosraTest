@@ -3,47 +3,54 @@
 import mongoose from "mongoose";
 import config from "../config/index";
 
-// mongoose.set("debug", true);
+let conn;
 
-let mainDb;
+export function init() {
+  const RECONNECT_TIME = 5000;
+  const CONN_URL = config.mainDbconfig.connString;
 
-const RECONNECT_TIME = 5000;
-const CONN_URL = config.mainDbconfig.connString;
-log("info", `CONN_URL to connect to Migration database ${CONN_URL}`);
+  if (conn) {
+    return conn;
+  }
 
-function connect() {
-  mainDb = mongoose.createConnection(CONN_URL, {});
+  mongoose.set("debug", (collectionName, methodName, ...methodArgs) => {
+    // use custom function to log collection methods + arguments
+    log("info", `Mongoose: ${collectionName}.${methodName}(${methodArgs.join(", ")})`);
+  });
+
+  log("info", `CONN_URL to connect to main database ${CONN_URL}`);
+  conn = mongoose.createConnection(CONN_URL);
+
+  //  Mongoose Connection Events
+  conn.on("error", (error) => {
+    log("error", { error });
+  });
+
+  conn.once("open", () => {
+    log("info", { dBConnectionStatus: "open" });
+  });
+
+  conn.on("connected", () => {
+    log("info", { dBConnectionStatus: "connected" });
+  });
+
+  conn.on("connecting", () => {
+    log("info", { dBConnectionStatus: "connecting" });
+  });
+
+  conn.on("reconnected", () => {
+    log("info", { dBConnectionStatus: "reconnected" });
+  });
+
+  conn.on("disconnected", () => {
+    log("error", { dBConnectionStatus: `disconnected Reconnecting in ${RECONNECT_TIME / 1000}s...` });
+    // https://github.com/automattic/mongoose/issues/5169#issuecomment-314983113
+    setTimeout(() => { conn.openUri(CONN_URL).catch(() => { }); }, RECONNECT_TIME);
+  });
+
+  return conn;
 }
 
-connect();
-
-//  Mongoose Connection Events
-mainDb.on("error", (error) => {
-  log("error", { error });
-});
-
-mainDb.once("open", () => {
-  log("info", { dBConnectionStatus: "open" });
-});
-
-mainDb.on("connected", () => {
-  log("info", { dBConnectionStatus: "connected" });
-});
-
-mainDb.on("connecting", () => {
-  log("info", { dBConnectionStatus: "connecting" });
-});
-
-mainDb.on("reconnected", () => {
-  log("info", { dBConnectionStatus: "reconnected" });
-});
-
-mainDb.on("disconnected", () => {
-  log("error", { dBConnectionStatus: `disconnected Reconnecting in ${RECONNECT_TIME / 1000}s...` });
-  // https://github.com/automattic/mongoose/issues/5169#issuecomment-314983113
-  setTimeout(() => { mainDb.openUri(CONN_URL).catch(() => {}); }, RECONNECT_TIME);
-});
-
-module.exports = {
-  mainDb,
-};
+export function getInstanceOfDbConnection() {
+  return conn;
+}

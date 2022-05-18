@@ -1,5 +1,5 @@
 import * as AbstractModels from "../models/AbstractModels";
-import { AuditLogs } from "../connections/AnalyticsDb";
+import { AuditLogs } from "../models/analyticsDbSchema/index";
 
 const auditLogResponse = (error, req, res) => {
   const selectCondition = {

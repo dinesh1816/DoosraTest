@@ -1,7 +1,5 @@
 import { Schema } from "mongoose";
 
-import { mainDb } from "../connections/MainDb";
-
 const UsersSchema = new Schema({
   password: {
     type: String,
@@ -46,5 +44,4 @@ const UsersSchema = new Schema({
   },
 });
 
-const Users = mainDb.model("Users", UsersSchema, "Users");
-export default Users;
+export default UsersSchema;
