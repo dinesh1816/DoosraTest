@@ -1,0 +1,9 @@
+export const LOGGER_USER_DETAILS = "loggerUserDetails";
+export const LOGGER_REQUEST_PAYLOAD = "loggerRequestPayload";
+export const LOGGER_RESPONSE_PAYLOAD = "loggerResponsePayload";
+export const LOGGER_REQUEST_START_TIME = "loggerRequestStartTime";
+export const LOGGER_API_ROUTE = "loggerRoute";
+export const LOGGER_USER_IP_ADDRESS = "loggerUserIpAddress";
+export const LOGGER_CORRELATIONID = "loggerCorrelationId";
+export const LOGGER_RESPONSE_TIME = "loggerResponseTime";
+export const LOGGER_URL_REDIRECTION_OBJ = "loggerUrlRedirectionObj";

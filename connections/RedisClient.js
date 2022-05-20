@@ -4,23 +4,34 @@ import config from "../config/index";
 // eslint-disable-next-line import/no-mutable-exports
 let RedisClient;
 
-(async () => {
+export function init() {
+  const CONN_URL = config.redisConfig.connString;
+
+  if (RedisClient) {
+    return RedisClient;
+  }
+
+  log("info", `CONN_URL to connect to redis ${CONN_URL}`);
+
   RedisClient = createClient({
-    url: config.redisConfig.connString,
+    url: CONN_URL,
   });
 
-  RedisClient.on("connect", () => console.log("Redis Client Initiating Connection..."));
-  RedisClient.on("ready", () => console.log("Redis Client Connected Successfully."));
-  RedisClient.on("reconnecting", () => console.log("Redis Client Reconnecting..."));
-  RedisClient.on("end", () => console.log("Redis Client Disconnected."));
-  RedisClient.on("error", (err) => console.log("Redis Client Error", err));
-
+  //  Redis Connection Events
+  RedisClient.on("connect", () => log("info", { redisConnection: "connect" }));
+  RedisClient.on("ready", () => log("info", { redisConnection: "ready" }));
+  RedisClient.on("reconnecting", () => log("info", { redisConnection: "reconnecting" }));
+  RedisClient.on("end", () => log("info", { redisConnection: "disconnected" }));
+  RedisClient.on("error", (error) => log("info", { error }));
   try {
-    await RedisClient.connect();
-    console.log("Redis Client Connected");
-  } catch (err) {
-    console.error("Redis Client Exception", err);
+    RedisClient.connect();
+  } catch (error) {
+    log("error", { error });
   }
-})();
 
-export default RedisClient;
+  return RedisClient;
+}
+
+export function getDbInstance() {
+  return RedisClient;
+}

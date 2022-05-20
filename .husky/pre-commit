@@ -1,7 +1,7 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
-
-for file in $(git diff --cached --name-only | grep -E '\.(js)$')
+# diff filter d exlucdes deleted files. https://git-scm.com/docs/git-diff#Documentation/git-diff.txt---diff-filterACDMRTUXB82308203
+for file in $(git diff --diff-filter=d --cached --name-only | grep -E '\.(js)$')
 do
   # fix possible issues
   node_modules/.bin/eslint "$file" --fix

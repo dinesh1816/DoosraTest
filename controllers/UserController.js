@@ -15,7 +15,7 @@ export const register = async (req, res, next) => {
     lastName,
   };
   const clientDetails = {
-    metro_auth_key: req.header(HEADER_API_KEY),
+    apiKey: req.header(HEADER_API_KEY),
   };
   const userObj = await UserService.registerUser(userDetails, clientDetails);
   req.session = Auth.createSessionObj(userObj);

@@ -5,7 +5,7 @@ import User from "../../models/Users";
 const deleteUsers = async () => {
   const findCondition = {};
   await AbstractModels.mongoDeleteMany(User, findCondition);
-  console.log("users deleted executed");
+  log("info", "users deleted executed");
 };
 
 module.exports = deleteUsers;

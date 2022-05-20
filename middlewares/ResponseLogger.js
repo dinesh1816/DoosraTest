@@ -1,9 +1,9 @@
 import * as AbstractModels from "../models/AbstractModels";
-import AuditLogs from "../models/AuditLogs";
+import { AuditLogs } from "../models/analyticsDbSchema/index";
 
-const auditLogResponse = (err, req, res) => {
+const auditLogResponse = (error, req, res) => {
   const selectCondition = {
-    requestId: req.routeObj.requestId,
+    correlationId: req.headers.correlationId,
   };
   const updateCondition = {
     status: true,
@@ -18,10 +18,10 @@ const auditLogResponse = (err, req, res) => {
     updateCondition.routeCategory = req.routeObj.routeCategory;
   }
 
-  if (err) {
+  if (error) {
     updateCondition.response = {
-      code: err.code || 1000,
-      reason: err.message,
+      code: error.code || 1000,
+      reason: error.message,
     };
     updateCondition.status = false;
   } else {
@@ -42,19 +42,21 @@ export const resSuccessLog = (req, res) => {
   if (routeCategory !== "healthCheckRoutes") {
     auditLogResponse(null, req, res);
   }
-  res.setHeader("requestId", req.routeObj.requestId);
   res.status(res.statusCode || 200).send({ status: true, response: res.data });
 };
 
-export const resErrorLog = (err, req, res, next) => {
-  auditLogResponse(err, req, res);
-  // next(err);
-  res.setHeader("requestId", req.routeObj.requestId);
-  res.status(res.statusCode || 200).send({
+export const resErrorLog = (error, req, res, next) => {
+  log("error", error.stack);
+  auditLogResponse(error, req, res);
+  if (res.headersSent) {
+    return next(error);
+  }
+  res.status(error.statusCode);
+  return res.send({
     status: false,
     response: {
-      code: err.code || 1000,
-      reason: err.message,
+      code: error.code || 1000,
+      reason: error.message,
     },
   });
 };

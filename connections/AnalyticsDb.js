@@ -3,51 +3,49 @@
 import mongoose from "mongoose";
 import config from "../config/index";
 
-mongoose.set("debug", true);
+let conn;
 
-let analyticsDb;
+export function init() {
+  const RECONNECT_TIME = 5000;
+  const CONN_URL = config.analyticsDbConfig.connString;
 
-const RECONNECT_TIME = 5000;
-const CONN_URL = config.analyticsDbConfig.connString;
-console.log("CONN_URL to connect to Migration database", CONN_URL);
+  if (conn) {
+    return conn;
+  }
 
-function connect() {
-  analyticsDb = mongoose.createConnection(CONN_URL, {});
+  log("info", `CONN_URL to connect to analytics database ${CONN_URL}`);
+  conn = mongoose.createConnection(CONN_URL);
+
+  //  Mongoose Connection Events
+  conn.on("error", (error) => {
+    log("error", { error });
+  });
+
+  conn.once("open", () => {
+    log("info", { dBConnectionStatus: "open" });
+  });
+
+  conn.on("connected", () => {
+    log("info", { dBConnectionStatus: "connected" });
+  });
+
+  conn.on("connecting", () => {
+    log("info", { dBConnectionStatus: "connecting" });
+  });
+
+  conn.on("reconnected", () => {
+    log("info", { dBConnectionStatus: "reconnected" });
+  });
+
+  conn.on("disconnected", () => {
+    log("error", { dBConnectionStatus: `disconnected Reconnecting in ${RECONNECT_TIME / 1000}s...` });
+    // https://github.com/automattic/mongoose/issues/5169#issuecomment-314983113
+    setTimeout(() => { conn.openUri(CONN_URL).catch(() => { }); }, RECONNECT_TIME);
+  });
+
+  return conn;
 }
 
-connect();
-
-//  Mongoose Connection Events
-analyticsDb.on("error", (err) => {
-  console.error("analyticsDb MongoDB connection error: ", err.message);
-});
-
-analyticsDb.once("open", () => {
-  console.log(
-    "Connection opened to analyticsDb MongoDB through mongoose successfully!!",
-  );
-});
-
-analyticsDb.on("connected", () => {
-  console.log("Connected to analyticsDb MongoDB successfully!!");
-});
-
-analyticsDb.on("connecting", () => {
-  console.log("Connecting to analyticsDb MongoDB...");
-});
-
-analyticsDb.on("reconnected", () => {
-  console.log("analyticsDb MongoDB reconnected!");
-});
-
-analyticsDb.on("disconnected", () => {
-  console.error(
-    `analyticsDb MongoDB disconnected! Reconnecting in ${RECONNECT_TIME / 1000}s...`,
-  );
-  // https://github.com/automattic/mongoose/issues/5169#issuecomment-314983113
-  setTimeout(() => { analyticsDb.openUri(CONN_URL).catch(() => {}); }, RECONNECT_TIME);
-});
-
-module.exports = {
-  analyticsDb,
-};
+export function getDbInstance() {
+  return conn;
+}

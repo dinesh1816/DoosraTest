@@ -1,7 +1,7 @@
 import * as AbstractModels from "../models/AbstractModels";
 import * as Auth from "./Auth";
 
-import AuditLogs from "../models/AuditLogs";
+import { AuditLogs } from "../models/analyticsDbSchema/index";
 
 const auditLogRequest = async (req) => {
   const doc = {
@@ -9,7 +9,7 @@ const auditLogRequest = async (req) => {
     method: req.method,
     userAgent: req.headers["user-agent"],
     ipAddress: req.headers["x-forwarded-for"] || req.connection.remoteAddress,
-    requestId: req.routeObj.requestId,
+    correlationId: req.headers.correlationId,
     eventType: req.routeObj.eventType,
     requestBody: req.body,
   };
@@ -21,7 +21,7 @@ const auditLogRequest = async (req) => {
 };
 
 const reqLog = (req, res, next) => {
-  const routeObj = Auth.injectRequestId(req);
+  const routeObj = Auth.setMetrics(req, res);
   req.routeObj = routeObj;
   if (routeObj.routeCategory !== "healthCheckRoutes") {
     auditLogRequest(req);

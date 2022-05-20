@@ -1,13 +1,13 @@
-import cryptoRandomString from "crypto-random-string";
 import path from "path";
 import jwt from "jsonwebtoken";
 import fs from "fs";
 import crypto from "crypto";
+import * as Constants from "../constants/Constants";
 
 import * as ErrorUtils from "../errors/ErrorUtils";
 import * as AbstractModels from "../models/AbstractModels";
-import Users from "../models/Users";
-import Clients from "../models/Clients";
+import { Users, Clients } from "../models/mainDbSchema/index";
+
 import RedisClient from "../connections/RedisClient";
 
 import {
@@ -17,6 +17,8 @@ import {
 import {
   HEADER_API_KEY, HEADER_SESSION_TOKEN,
 } from "../constants/Keys";
+
+const httpContext = require("express-http-context");
 
 // Static data can be read using require or fs
 let newSessionRoutes = fs.readFileSync(
@@ -31,9 +33,10 @@ let authenticatedRoutes = fs.readFileSync(
 );
 authenticatedRoutes = JSON.parse(authenticatedRoutes);
 
-const noSessionRoutes = require("./NoSessionRoutes.json");
-const noAPIKeyRoutes = require("./NoClientIdRoutes.json");
+const uuid = require("uuid");
 const healthCheckRoutes = require("./HealthCheckRoutes.json");
+const noAPIKeyRoutes = require("./NoClientIdRoutes.json");
+const noSessionRoutes = require("./NoSessionRoutes.json");
 
 const routeMaps = [
   newSessionRoutes,
@@ -80,8 +83,8 @@ const getRedisSession = async (sessionId) => {
   try {
     const redisSession = await RedisClient.get(sessionId);
     return redisSession;
-  } catch (err) {
-    console.log("Redis connection error ", err.stack);
+  } catch (error) {
+    log("error", { error });
     throw ErrorUtils.redisConnectionError();
   }
 };
@@ -102,16 +105,14 @@ export const getSessionObj = async (req) => {
 
   const sessionId = decrypt(sessiontoken);
   let session = await getRedisSession(sessionId);
-  console.log("session token :", sessiontoken);
-  console.log("sessionId :", sessionId);
-  console.log("session :", session);
+  log("info", { session, sessionId, sessiontoken });
 
   if (!session) {
     throw ErrorUtils.InvalidSessionToken();
   }
   try {
     session = JSON.parse(session);
-  } catch (err) {
+  } catch (error) {
     throw ErrorUtils.InvalidSessionToken();
   }
   return session;
@@ -210,8 +211,8 @@ For each req store req, res audits
 export const checks = async (req, res, next) => {
   const { routeCategory } = req.routeObj;
   if (routeCategory === "others") {
-    const err = ErrorUtils.InvalidRequest();
-    next(err);
+    const error = ErrorUtils.InvalidRequest();
+    next(error);
   } else if (routeCategory === "healthCheckRoutes") {
     next();
   } else if (routeCategory === "noAPIKeyRoutes") {
@@ -222,8 +223,8 @@ export const checks = async (req, res, next) => {
   ) {
     const isValidAPIKey = await checkApiKeyValidity(req);
     if (!isValidAPIKey) {
-      const err = ErrorUtils.InvalidAPIKey();
-      next(err);
+      const error = ErrorUtils.InvalidAPIKey();
+      next(error);
     } else {
       next();
     }
@@ -232,20 +233,20 @@ export const checks = async (req, res, next) => {
     const isValidAPIKey = await checkApiKeyValidity(req);
     const session = await getSessionObj(req);
     if (!session) {
-      const err = ErrorUtils.InvalidSessionToken();
-      next(err);
+      const error = ErrorUtils.InvalidSessionToken();
+      next(error);
     } else {
       const isAuthorizedToAccessRoute = checkAutorization(req);
       const isBlockListeduser = await checkBlockListedUser(req);
       if (!isValidAPIKey) {
-        const err = ErrorUtils.InvalidAPIKey();
-        next(err);
+        const error = ErrorUtils.InvalidAPIKey();
+        next(error);
       } else if (isBlockListeduser) {
-        const err = ErrorUtils.BlockListedUser();
-        next(err);
+        const error = ErrorUtils.BlockListedUser();
+        next(error);
       } else if (!isAuthorizedToAccessRoute) {
-        const err = ErrorUtils.InvalidAuthorization();
-        next(err);
+        const error = ErrorUtils.InvalidAuthorization();
+        next(error);
       } else {
         req.sesssion = session;
         next();
@@ -254,13 +255,21 @@ export const checks = async (req, res, next) => {
   }
 };
 
-export const injectRequestId = (req) => {
+export const setMetrics = (req, res) => {
   const { originalUrl } = req;
   const httpMethod = req.method;
   const routeObj = getRouteObj(originalUrl, httpMethod);
-
-  routeObj.requestId = cryptoRandomString({ length: 15 });
   routeObj.startTime = new Date().getTime();
+
+  let correlationId = req.get(Constants.LOGGER_CORRELATIONID);
+  if (!correlationId) {
+    // generate and set uuid v4 version
+    correlationId = uuid.v4();
+    httpContext.set(Constants.LOGGER_CORRELATIONID, correlationId);
+    // inject correlationId in headers
+    req.headers.correlationId = httpContext.get(Constants.LOGGER_CORRELATIONID);
+    res.set("CorrelationId", httpContext.get(Constants.LOGGER_CORRELATIONID));
+  }
 
   return routeObj;
 };
