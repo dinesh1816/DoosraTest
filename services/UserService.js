@@ -2,7 +2,7 @@ import * as ErrorUtils from "../errors/ErrorUtils";
 import * as AbstractModels from "../models/AbstractModels";
 import * as EncryptionService from "./EncryptionService";
 
-import { Users, Clients } from "../models/mainDBSchemas/index";
+import { Users, Clients } from "../models/mainDbSchema/index";
 
 async function getClientIdFromApiKey(apiKey) {
   const findCondition = {

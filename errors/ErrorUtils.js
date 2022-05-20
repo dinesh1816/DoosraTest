@@ -32,56 +32,77 @@ export function InvalidAPIKey() {
   );
 }
 
-export const InvalidSessionToken = () => ErrorUtils(
-  ErrorType.INVALID_SESSION_TOKEN,
-  RESPONSE_STATUS_400_BAD_REQUEST,
-);
+export function InvalidSessionToken() {
+  return ErrorUtils(
+    InvalidSessionToken,
+    ErrorType.INVALID_SESSION_TOKEN,
+    RESPONSE_STATUS_400_BAD_REQUEST,
+  );
+}
 
-export const InvalidAuthorization = () => ErrorUtils(
-  ErrorType.INVALID_AUTHORIZATION,
-  RESPONSE_STATUS_401_UNAUTHORIZED,
-);
+export function InvalidAuthorization() {
+  return ErrorUtils(
+    InvalidAuthorization,
+    ErrorType.INVALID_AUTHORIZATION,
+    RESPONSE_STATUS_401_UNAUTHORIZED,
+  );
+}
 
-export const BlockListedUser = () => ErrorUtils(
-  ErrorType.BLOCK_LISTED_USER,
-  RESPONSE_STATUS_403_FORBIDDEN,
-);
+export function BlockListedUser() {
+  return ErrorUtils(
+    BlockListedUser,
+    ErrorType.BLOCK_LISTED_USER,
+    RESPONSE_STATUS_403_FORBIDDEN,
+  );
+}
 
-export const UserNotFoundError = () => ErrorUtils(
-  ErrorType.USER_DOES_NOT_EXIST,
-  RESPONSE_STATUS_404_NOT_FOUND,
-);
+export function UserNotFoundError() {
+  return ErrorUtils(
+    UserNotFoundError,
+    ErrorType.USER_DOES_NOT_EXIST,
+    RESPONSE_STATUS_404_NOT_FOUND,
+  );
+}
 
-export const InvalidPasswordError = () => ErrorUtils(
-  ErrorType.INVALID_PASSWORD,
-  RESPONSE_STATUS_401_UNAUTHORIZED,
-);
+export function InvalidPasswordError() {
+  return ErrorUtils(
+    InvalidPasswordError,
+    ErrorType.INVALID_PASSWORD,
+    RESPONSE_STATUS_401_UNAUTHORIZED,
+  );
+}
 
-export const InvalidSchemaError = (err) => {
-  const errorObj = {
-    code: ErrorType.INVALID_SCHEMA.code,
-    message: `${ErrorType.INVALID_SCHEMA.message} ${err}`,
-  };
-  return ErrorUtils(errorObj);
-};
+export function InvalidSchemaError() {
+  return ErrorUtils(
+    InvalidSchemaError,
+    ErrorType.INVALID_SCHEMA.code,
+    RESPONSE_STATUS_500_INTERNAL_SERVER_ERROR,
+  );
+}
 
-export const InternalServerError = (err) => {
-  const errorObj = {
-    code: ErrorType.INTERNAL_SERVER_ERR.code,
-    message: err,
-  };
-  return ErrorUtils(errorObj, RESPONSE_STATUS_500_INTERNAL_SERVER_ERROR);
-};
+export function InternalServerError() {
+  return ErrorUtils(
+    InternalServerError,
+    ErrorType.INTERNAL_SERVER_ERR,
+    RESPONSE_STATUS_500_INTERNAL_SERVER_ERROR,
+  );
+}
 
-export const DataNotFound = () => ErrorUtils(
-  ErrorType.DATA_NOT_FOUND,
-  RESPONSE_STATUS_404_NOT_FOUND,
-);
+export function DataNotFound() {
+  return ErrorUtils(
+    DataNotFound,
+    ErrorType.DATA_NOT_FOUND,
+    RESPONSE_STATUS_404_NOT_FOUND,
+  );
+}
 
-export const MongoError = () => ErrorUtils(
-  ErrorType.MONGO_ERROR,
-  RESPONSE_STATUS_500_INTERNAL_SERVER_ERROR,
-);
+export function MongoError() {
+  return ErrorUtils(
+    MongoError,
+    ErrorType.MONGO_ERROR,
+    RESPONSE_STATUS_500_INTERNAL_SERVER_ERROR,
+  );
+}
 
 export function DataAlreadyExists() {
   return new ErrorUtils(
@@ -91,30 +112,39 @@ export function DataAlreadyExists() {
   );
 }
 
-export const NotInSurroundingsError = () => ErrorUtils(ErrorType.NOT_IN_SURROUNDINGS);
+export function IncorrectOTP() {
+  return ErrorUtils(
+    IncorrectOTP,
+    ErrorType.INCORRECT_OTP,
+    RESPONSE_STATUS_401_UNAUTHORIZED,
+  );
+}
 
-export const IncorrectOTP = () => ErrorUtils(
-  ErrorType.INCORRECT_OTP,
-  RESPONSE_STATUS_401_UNAUTHORIZED,
-);
+export function InvalidUserError() {
+  return ErrorUtils(
+    InvalidUserError,
+    ErrorType.INVALID_USER,
+    RESPONSE_STATUS_401_UNAUTHORIZED,
+  );
+}
 
-export const InvalidUserError = () => ErrorUtils(ErrorType.INVALID_USER);
+export function ExpiredUser() {
+  return ErrorUtils(
+    ErrorType.EXPIRED_USER,
+    RESPONSE_STATUS_403_FORBIDDEN,
+  );
+}
 
-export const InvalidLatLon = () => ErrorUtils(ErrorType.INVALID_LAT_LON);
+export function NotRegisteredUser() {
+  return ErrorUtils(
+    ErrorType.NOT_REGISTERED_USER,
+    RESPONSE_STATUS_404_NOT_FOUND,
+  );
+}
 
-export const InvalidTruckId = () => ErrorUtils(ErrorType.INVALID_TRUCK_ID);
-
-export const ExpiredUser = () => ErrorUtils(
-  ErrorType.EXPIRED_USER,
-  RESPONSE_STATUS_403_FORBIDDEN,
-);
-
-export const NotRegisteredUser = () => ErrorUtils(
-  ErrorType.NOT_REGISTERED_USER,
-  RESPONSE_STATUS_404_NOT_FOUND,
-);
-
-export const redisConnectionError = () => ErrorUtils(
-  ErrorType.REDIS_CONNECTION_ERROR,
-  RESPONSE_STATUS_500_INTERNAL_SERVER_ERROR,
-);
+export function redisConnectionError() {
+  return ErrorUtils(
+    ErrorType.REDIS_CONNECTION_ERROR,
+    RESPONSE_STATUS_500_INTERNAL_SERVER_ERROR,
+  );
+}

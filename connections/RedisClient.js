@@ -32,6 +32,6 @@ export function init() {
   return RedisClient;
 }
 
-export function getInstanceOfDbConnection() {
+export function getDbInstance() {
   return RedisClient;
 }

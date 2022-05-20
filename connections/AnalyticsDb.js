@@ -46,6 +46,6 @@ export function init() {
   return conn;
 }
 
-export function getInstanceOfDbConnection() {
+export function getDbInstance() {
   return conn;
 }
