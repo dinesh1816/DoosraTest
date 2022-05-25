@@ -27,6 +27,7 @@ curl --location --request POST 'localhost:4000/v1/user/register' \
 
 Node version: 16
 used VS plugins: eslint
+Use Yarn package manager
 
 TODO:
 
