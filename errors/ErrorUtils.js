@@ -33,7 +33,7 @@ export function InvalidAPIKey() {
 }
 
 export function InvalidSessionToken() {
-  return ErrorUtils(
+  return new ErrorUtils(
     InvalidSessionToken,
     ErrorType.INVALID_SESSION_TOKEN,
     RESPONSE_STATUS_400_BAD_REQUEST,
@@ -41,7 +41,7 @@ export function InvalidSessionToken() {
 }
 
 export function InvalidAuthorization() {
-  return ErrorUtils(
+  return new ErrorUtils(
     InvalidAuthorization,
     ErrorType.INVALID_AUTHORIZATION,
     RESPONSE_STATUS_401_UNAUTHORIZED,
@@ -49,7 +49,7 @@ export function InvalidAuthorization() {
 }
 
 export function BlockListedUser() {
-  return ErrorUtils(
+  return new ErrorUtils(
     BlockListedUser,
     ErrorType.BLOCK_LISTED_USER,
     RESPONSE_STATUS_403_FORBIDDEN,
@@ -57,7 +57,7 @@ export function BlockListedUser() {
 }
 
 export function UserNotFoundError() {
-  return ErrorUtils(
+  return new ErrorUtils(
     UserNotFoundError,
     ErrorType.USER_DOES_NOT_EXIST,
     RESPONSE_STATUS_404_NOT_FOUND,
@@ -65,7 +65,7 @@ export function UserNotFoundError() {
 }
 
 export function InvalidPasswordError() {
-  return ErrorUtils(
+  return new ErrorUtils(
     InvalidPasswordError,
     ErrorType.INVALID_PASSWORD,
     RESPONSE_STATUS_401_UNAUTHORIZED,
@@ -73,7 +73,7 @@ export function InvalidPasswordError() {
 }
 
 export function InvalidSchemaError() {
-  return ErrorUtils(
+  return new ErrorUtils(
     InvalidSchemaError,
     ErrorType.INVALID_SCHEMA.code,
     RESPONSE_STATUS_500_INTERNAL_SERVER_ERROR,
@@ -81,7 +81,7 @@ export function InvalidSchemaError() {
 }
 
 export function InternalServerError() {
-  return ErrorUtils(
+  return new ErrorUtils(
     InternalServerError,
     ErrorType.INTERNAL_SERVER_ERR,
     RESPONSE_STATUS_500_INTERNAL_SERVER_ERROR,
@@ -89,7 +89,7 @@ export function InternalServerError() {
 }
 
 export function DataNotFound() {
-  return ErrorUtils(
+  return new ErrorUtils(
     DataNotFound,
     ErrorType.DATA_NOT_FOUND,
     RESPONSE_STATUS_404_NOT_FOUND,
@@ -97,7 +97,7 @@ export function DataNotFound() {
 }
 
 export function MongoError() {
-  return ErrorUtils(
+  return new ErrorUtils(
     MongoError,
     ErrorType.MONGO_ERROR,
     RESPONSE_STATUS_500_INTERNAL_SERVER_ERROR,
@@ -113,7 +113,7 @@ export function DataAlreadyExists() {
 }
 
 export function IncorrectOTP() {
-  return ErrorUtils(
+  return new ErrorUtils(
     IncorrectOTP,
     ErrorType.INCORRECT_OTP,
     RESPONSE_STATUS_401_UNAUTHORIZED,
@@ -121,7 +121,7 @@ export function IncorrectOTP() {
 }
 
 export function InvalidUserError() {
-  return ErrorUtils(
+  return new ErrorUtils(
     InvalidUserError,
     ErrorType.INVALID_USER,
     RESPONSE_STATUS_401_UNAUTHORIZED,
@@ -129,21 +129,24 @@ export function InvalidUserError() {
 }
 
 export function ExpiredUser() {
-  return ErrorUtils(
+  return new ErrorUtils(
+    ExpiredUser,
     ErrorType.EXPIRED_USER,
     RESPONSE_STATUS_403_FORBIDDEN,
   );
 }
 
 export function NotRegisteredUser() {
-  return ErrorUtils(
+  return new ErrorUtils(
+    NotRegisteredUser,
     ErrorType.NOT_REGISTERED_USER,
     RESPONSE_STATUS_404_NOT_FOUND,
   );
 }
 
 export function redisConnectionError() {
-  return ErrorUtils(
+  return new ErrorUtils(
+    redisConnectionError,
     ErrorType.REDIS_CONNECTION_ERROR,
     RESPONSE_STATUS_500_INTERNAL_SERVER_ERROR,
   );
